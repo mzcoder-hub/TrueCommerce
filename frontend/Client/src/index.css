@@ -1,0 +1,135 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, Courier New, monospace;
+}
+
+.css-u2d2ff {
+  border-radius: 12px;
+  margin: 0px;
+  overflow: hidden;
+}
+.price {
+  font-size: 20px;
+}
+.productBody {
+  position: relative !important;
+  height: auto;
+  padding-top: 25px !important;
+}
+.productBody > span {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+.productBody > .rated > fieldset > span {
+  position: relative;
+  left: 0;
+  bottom: 0;
+}
+.productBody > .rated {
+  position: absolute;
+  height: 10%;
+  width: 100%;
+  top: 180px;
+}
+.stickToBottomHome {
+  max-width: 580px;
+  width: 100%;
+  position: fixed;
+  text-align: center;
+  bottom: 0;
+  padding-top: 10;
+  box-shadow: 0 -1px 1px 0 rgba(0, 0, 0, 0.1);
+  background-color: white;
+  font-size: 0.53rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.stickToBottomProduct {
+  max-width: 580px;
+  width: 100%;
+  position: fixed;
+  text-align: center;
+  bottom: 0;
+  padding-top: 10 !important;
+  box-shadow: 0 -1px 1px 0 rgba(0, 0, 0, 0.1);
+  background-color: black !important;
+  font-size: 0.53rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.bottomNavLabel {
+  color: white !important;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.MuiBottomNavigationAction-root {
+  max-width: 290px !important;
+}
+
+.image-product {
+  margin-top: -35px !important;
+  width: 100% !important;
+  height: 224.72px !important;
+}
+
+@media only screen and (max-width: 500px) {
+  .image-product {
+    margin-top: -35px !important;
+    width: 100% !important;
+    height: 140px !important;
+  }
+  .productBody > .rated {
+    position: absolute;
+    height: 10%;
+    width: 100%;
+    top: 95px;
+    text-align: center;
+  }
+  .productBody > .rated > fieldset > .countReview {
+    display: none;
+  }
+  .stickToBottomHome {
+    left: 0;
+    right: 0;
+  }
+  .stickToBottomProduct {
+    left: 0;
+    right: 0;
+  }
+}
+.productBody > .rated > fieldset > .countReview {
+  position: relative;
+  bottom: 6px;
+  left: 5px;
+}
+
+.marating {
+  margin-left: -15px;
+}
+
+fieldset > .countReviewPost {
+  padding-top: 10px;
+  margin-top: -38px;
+  margin-left: 110px;
+}
+
+.productBody > span > p {
+  background-color: #000;
+  color: #fff;
+  font-weight: bold;
+  margin-top: 0px;
+  padding: 10px;
+  text-decoration: none;
+}

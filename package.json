@@ -1,0 +1,53 @@
+{
+  "name": "proshop",
+  "version": "1.0.0",
+  "description": "MERN Shopping cart App",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node backend/server",
+    "server": "nodemon backend/server",
+    "admin": "npm start --prefix frontend/Admin",
+    "clients": "npm start --prefix frontend/Client.Old",
+    "clients.New": "npm start --prefix frontend/Client",
+    "dev": "concurrently \"npm run server\" \"npm run clients.New\" \"npm run admin\"",
+    "data:import": "node backend/seeder",
+    "data:destroy": "node backend/seeder -d",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mzcoder-hub/Proshop-Node.git"
+  },
+  "keywords": [
+    "Online",
+    "Shop"
+  ],
+  "author": "MzCoder-Hub",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mzcoder-hub/Proshop-Node/issues"
+  },
+  "homepage": "https://github.com/mzcoder-hub/Proshop-Node#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "5.11.15",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "node-sass": "^4.14.1",
+    "react-slugify": "^2.0.3",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.7",
+    "prettier": "2.2.1"
+  }
+}
