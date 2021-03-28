@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Button,
   Card,
@@ -9,19 +10,33 @@ import {
   Typography,
 } from '@material-ui/core'
 import Carousel from 'react-material-ui-carousel'
-import products from '../products'
 import Divider from '@material-ui/core/Divider'
 
 import Meta from '../components/Meta'
 import Rated from '../components/Rated'
 
+import { listProductDetails } from '../actions/productActions'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
+
 const ProductScreen = ({ match }) => {
-  const product = products.find((p) => p._id === match.params.id)
-  // const pictures = [
-  //   { image: '/images/airpods.jpg', title: 'Iu 1' },
-  //   { image: '/images/phone.jpg', title: 'Iu 2' },
-  //   { image: '/images/camera.jpg', title: 'Iu 3' },
-  // ]
+  const dispatch = useDispatch()
+
+  const productDetails = useSelector((state) => state.productDetails)
+  const { loading, error, product } = productDetails
+
+  const imagessss = product.image
+  // const res = imagessss.map((position) => ({ position }))
+
+  const res = imagessss.map((data) => {
+    const str = data.replace(/[^a-z0-9-.A-Z]/g, '/')
+
+    return { position: str }
+  })
+
+  useEffect(() => {
+    dispatch(listProductDetails(match.params.slug))
+  }, [dispatch, match])
 
   const style = {
     background: 'rgb(2 2 2)',
@@ -46,32 +61,39 @@ const ProductScreen = ({ match }) => {
           <Button style={style}>Back</Button>
         </Link>
         <Carousel>
-          {pictures.map(({ image, title }) => (
-            <Card key={image}>
+          {res.map(({ position }) => (
+            <Card key={position}>
               <CardMedia
-                image={image}
-                title={title}
+                image={`/${position}`}
                 style={{
-                  height: 250,
+                  height: 282,
                   paddingTop: '25%',
                 }}
               />
             </Card>
           ))}
         </Carousel>
-        <Card style={{ marginBottom: 65 }}>
-          <CardContent>
-            <Typography variant='h5' component='h1'>
-              {product.name}
-            </Typography>
-            <Rated
-              value={product.rating}
-              text={`${product.numReviews} Rating`}
-              classname='countReviewPost'
-            />
-            <Divider variant='middle' />
-          </CardContent>
-        </Card>
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <Message severity='error' childern={error} />
+        ) : (
+          <>
+            <Card style={{ marginBottom: 65 }}>
+              <CardContent>
+                <Typography variant='h5' component='h1'>
+                  {product.name}
+                </Typography>
+                <Rated
+                  value={product.rating}
+                  text={`${product.numReviews} Rating`}
+                  classname='countReviewPost'
+                />
+                <Divider variant='middle' />
+              </CardContent>
+            </Card>
+          </>
+        )}
       </Grid>
     </>
   )

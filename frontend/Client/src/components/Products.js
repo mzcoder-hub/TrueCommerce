@@ -67,7 +67,7 @@ const Products = ({ match }) => {
       {loading ? (
         <Loading />
       ) : error ? (
-        <Message severity='error' />
+        <Message severity='error' childer={error} />
       ) : (
         <Grid container spacing={2}>
           {products.map((product) => (

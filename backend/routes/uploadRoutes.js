@@ -57,23 +57,4 @@ router.post('/', upload.array('image', 5), (req, res) => {
   }
 })
 
-router.post('/', upload.array('image', 5), (req, res) => {
-  const files = req.files
-  if (!files) {
-    const error = new Error('Please choose files')
-    error.httpStatusCode = 400
-    return next(error)
-  } else {
-    const newArr = []
-    for (let i = 0; i < files.length; i++) {
-      // console.log(files[i].path)
-      newArr.push(files[i].path)
-    }
-
-    // console.log(JSON.encode(newArr))
-
-    res.send(newArr)
-  }
-})
-
 export default router

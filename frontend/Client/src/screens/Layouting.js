@@ -17,7 +17,7 @@ const Layouting = () => {
     <Grid item xs={12}>
       <Header />
       <Route path='/' component={HomeScreens} exact />
-      <Route path='/produk/:id' component={ProductScreen} exact />
+      <Route path='/produk/:slug' component={ProductScreen} exact />
       <Route path='/kategori' component={ProductByCategoryScreen} exact />
       {splitPath[1] === 'produk' ? <AddToCartCheckout /> : <NavigationBottom />}
     </Grid>
