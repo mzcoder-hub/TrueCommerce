@@ -20,6 +20,10 @@ const ProductByCategoryScreen = () => {
         title='Daftar Produk Kategori Murah'
         description='Daftar Produk Category Murah'
         keywords='Produk Kategori Murah, Kategori Murah, Jual Kategori Murah'
+        contentUrl=''
+        contentType=''
+        contentDescription=''
+        contentPrimaryImage=''
       />
       <Grid style={{ marginBottom: 65 }}>
         <Link to='/'>

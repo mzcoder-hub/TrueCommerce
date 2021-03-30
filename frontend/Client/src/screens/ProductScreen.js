@@ -54,6 +54,10 @@ const ProductScreen = ({ match }) => {
         title='Product Title'
         description='Product Description'
         keyword='Product Keywords'
+        contentUrl=''
+        contentType=''
+        contentDescription=''
+        contentPrimaryImage=''
       />
 
       <Grid item xs={12}>
