@@ -14,6 +14,13 @@ const reviewSchema = mongoose.Schema(
     timestamps: true,
   }
 )
+
+const variantSchema = mongoose.Schema({
+  type: { type: String },
+  ukuran: { type: String },
+  warna: { type: String },
+  harga: { type: Number },
+})
 const productSchema = mongoose.Schema(
   {
     user: {
@@ -47,11 +54,7 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    variant: {
-      ukuran: { type: String },
-      warna: { type: String },
-      harga: { type: Number },
-    },
+    variant: [variantSchema],
     description: {
       type: String,
       required: true,

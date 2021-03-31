@@ -8,17 +8,16 @@ const InvoiceSchema = mongoose.Schema(
       unique: true,
     },
     orderId: {
-        type: String,
-        required: true,
-        unique: true,
-      },
+      type: String,
+      required: true,
+      unique: true,
+    },
     paymentMethod: {
       type: String,
       required: true,
     },
     paymentResult: {
       id: { type: String },
-      customer_name : {type:String},
       status: { type: String },
       update_time: { type: Date },
       email_address: { type: String },
@@ -33,15 +32,15 @@ const InvoiceSchema = mongoose.Schema(
       required: true,
       default: false,
     },
-    fee : {
-        type: Number,
-        required: true,
-        default: 0.0,
+    fee: {
+      type: Number,
+      required: true,
+      default: 0.0,
     },
-    cleanPrice : {      
-        type: Number,
-        required: true,
-        default: 0.0
+    cleanPrice: {
+      type: Number,
+      required: true,
+      default: 0.0,
     },
     paidAt: {
       type: Date,

@@ -7,6 +7,11 @@ import {
   CardContent,
   CardMedia,
   Grid,
+  Table,
+  TableCell,
+  TableContainer,
+  TableBody,
+  TableRow,
   Typography,
 } from '@material-ui/core'
 import Carousel from 'react-material-ui-carousel'
@@ -14,6 +19,7 @@ import Divider from '@material-ui/core/Divider'
 
 import Meta from '../components/Meta'
 import Rated from '../components/Rated'
+import AddToCartCheckout from '../components/AddToCartCheckout'
 
 import { listProductDetails } from '../actions/productActions'
 import Loader from '../components/Loader'
@@ -85,7 +91,7 @@ const ProductScreen = ({ match }) => {
           <>
             <Card style={{ marginBottom: 65 }}>
               <CardContent>
-                <Typography variant='h5' component='h1'>
+                <Typography variant='h4' component='h1'>
                   {product.name}
                 </Typography>
                 <Rated
@@ -93,11 +99,55 @@ const ProductScreen = ({ match }) => {
                   text={`${product.numReviews} Rating`}
                   classname='countReviewPost'
                 />
-                <Divider variant='middle' />
+                <Divider />
+                <Typography
+                  variant='h5'
+                  component='h2'
+                  style={{ marginTop: 10, marginBottom: 10 }}
+                >
+                  Spesifikasi Produk {product.name}
+                </Typography>
+                <TableContainer style={{ margin: 5 }}>
+                  <Table aria-label='simple table'>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell component='th' scope='row'>
+                          <strong>Kategori</strong>
+                        </TableCell>
+                        <TableCell>{product.category}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell component='th' scope='row'>
+                          <strong>Brand</strong>
+                        </TableCell>
+                        <TableCell>{product.brand}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell component='th' scope='row'>
+                          <strong>Jumlah Stok</strong>
+                        </TableCell>
+                        <TableCell>{product.countInStock}</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+
+                <Typography
+                  variant='h5'
+                  component='h3'
+                  style={{ marginTop: 10, marginBottom: 10 }}
+                >
+                  Deskripsi Produk {product.name}
+                </Typography>
+                <div
+                  className='deskripsi'
+                  dangerouslySetInnerHTML={{ __html: product.description }}
+                ></div>
               </CardContent>
             </Card>
           </>
         )}
+        <AddToCartCheckout />
       </Grid>
     </>
   )

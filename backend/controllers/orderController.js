@@ -125,7 +125,9 @@ const getMyOrders = asyncHandler(async (req, res) => {
 
 const getOrders = asyncHandler(async (req, res) => {
   const pageSize = 5
-  const orders = await Order.find({}).populate('user', 'id name').limit(pageSize)
+  const orders = await Order.find({})
+    .populate('user', 'id name')
+    .limit(pageSize)
   res.json(orders)
 })
 
