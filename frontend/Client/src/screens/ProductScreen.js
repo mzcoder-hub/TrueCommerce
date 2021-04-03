@@ -147,7 +147,7 @@ const ProductScreen = ({ match }) => {
             </Card>
           </>
         )}
-        <AddToCartCheckout />
+        <AddToCartCheckout product={product} />
       </Grid>
     </>
   )

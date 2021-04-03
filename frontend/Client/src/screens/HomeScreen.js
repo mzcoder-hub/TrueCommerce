@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid } from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
 import Products from '../components/Products'
 import Sliders from '../components/Sliders'
 import Category from '../components/Category'

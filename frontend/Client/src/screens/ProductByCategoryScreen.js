@@ -1,5 +1,7 @@
-import { Button, Grid, Typography } from '@material-ui/core'
 import React from 'react'
+import Button from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
 import Products from '../components/Products'
 import { Link } from 'react-router-dom'
 import Meta from '../components/Meta'

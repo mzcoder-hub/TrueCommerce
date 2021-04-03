@@ -1,6 +1,6 @@
 import React from 'react'
 import Rating from '@material-ui/lab/Rating'
-import { Box } from '@material-ui/core'
+import Box from '@material-ui/core/Box'
 
 const Rated = ({ value, text, classname }) => {
   return (

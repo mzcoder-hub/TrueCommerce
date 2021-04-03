@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid } from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
 import Header from '../components/Header'
 import NavigationBottom from '../components/NavigationBottom'
 import { Route } from 'react-router-dom'
