@@ -6,17 +6,25 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
+import Chip from '@material-ui/core/Chip'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
+import DoneIcon from '@material-ui/icons/Done'
 
 const AddToCartCheckout = ({ product }) => {
   const [value, setValue] = useState('')
   const [open, setOpen] = useState(false)
+  const [variant, setVariant] = useState('')
+  const [handleSelect, setHandleSelect] = useState(false)
+
+  // useEffect(() => {
+  //   setVariantProduct(product.variant)
+  //   console.log(variantProduct)
+  // }, [product])
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
-
   const handleClickOpen = () => {
     setOpen(true)
   }
@@ -25,6 +33,17 @@ const AddToCartCheckout = ({ product }) => {
     setOpen(false)
     setValue('')
   }
+
+  const handleAddVariant = (e) => {
+    if (handleSelect === false) {
+      setHandleSelect(true)
+      setVariant(e.target.innerHTML)
+    } else {
+      setHandleSelect(false)
+      setVariant('')
+    }
+  }
+
   return (
     <>
       <Dialog
@@ -37,8 +56,33 @@ const AddToCartCheckout = ({ product }) => {
           {'Pilih variasi dan jumlah yang ingin anda pesan'}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id='alert-dialog-description'>
-            {product.name}
+          <DialogContentText id='alert-dialog-description' component='span'>
+            {product.map((product) => (
+              <>
+                <Chip
+                  key={product._id}
+                  size='small'
+                  label={product.warna}
+                  icon={
+                    variant === product.warna && handleSelect === true ? (
+                      <DoneIcon
+                        color='primary'
+                        visibility={
+                          handleSelect === true ? 'visible' : 'hidden'
+                        }
+                      />
+                    ) : (
+                      <></>
+                    )
+                  }
+                  onClick={(e) => {
+                    handleAddVariant(e)
+                  }}
+                  color={variant === product.warna ? 'primary' : 'default'}
+                  clickable
+                />
+              </>
+            ))}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

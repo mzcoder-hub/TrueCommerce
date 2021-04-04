@@ -82,6 +82,7 @@ const createProduct = asyncHandler(async (req, res) => {
     image: '/images/sample.jpg',
     primaryImage: '/images/sample.jpg',
     brand: 'sample Brand',
+    variant: [{ type: '', ukuran: '', warna: '', harga: '' }],
     category: 'sample category',
     slug: 'sample-name',
     countInStock: 0,
@@ -104,6 +105,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     price,
     description,
     primaryImage,
+    variant,
     image,
     brand,
     newSlug,
@@ -118,15 +120,20 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.price = price
     product.description = description
     product.slug = newSlug
+    product.variant = JSON.parse(variant)
     product.primaryImage = primaryImage
     product.image = image
     product.brand = brand
     product.category = category
     product.countInStock = countInStock
 
-    const updateProduct = await product.save()
+    try {
+      const updateProduct = await product.save()
 
-    res.status(201).json(updateProduct)
+      res.status(201).json(updateProduct)
+    } catch (error) {
+      console.log(error)
+    }
   } else {
     res.status(404)
     throw new Error('Product not found')

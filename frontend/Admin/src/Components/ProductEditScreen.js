@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Form, Button, Card } from 'react-bootstrap'
+import { Form, Button, Card, Col, Row } from 'react-bootstrap'
 import slugify from 'react-slugify'
 import { useDispatch, useSelector } from 'react-redux'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
@@ -61,6 +61,7 @@ const ProductEditScreen = ({ match, history }) => {
         setSlug(product.slug)
         setName(product.name)
         setPrice(product.price)
+        setInputFields(product.variant)
         setPrimaryImage(product.primaryImage)
         setImage(product.image)
         setBrand(product.brand)
@@ -124,6 +125,46 @@ const ProductEditScreen = ({ match, history }) => {
     }
   }
 
+  const CustomButton = ({ onClicks, isDisabled, textContent }) => (
+    <Button variant='danger' size='sm' onClick={onClicks} disabled={isDisabled}>
+      {textContent}
+    </Button>
+  )
+
+  const [inputFields, setInputFields] = useState([
+    { type: '', ukuran: '', warna: '', harga: '' },
+  ])
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+  }
+  const handleInputChange = (index, event) => {
+    const values = [...inputFields]
+    if (event.target.name === 'type') {
+      values[index].type = event.target.value
+    } else if (event.target.name === 'ukuran') {
+      values[index].ukuran = event.target.value
+    } else if (event.target.name === 'warna') {
+      values[index].warna = event.target.value
+    } else {
+      values[index].harga = event.target.value
+    }
+
+    setInputFields(values)
+  }
+
+  const handleAddFields = () => {
+    const values = [...inputFields]
+    values.push({ type: '', ukuran: '', warna: '', harga: '' })
+    setInputFields(values)
+  }
+
+  const handleRemoveFields = (index) => {
+    const values = [...inputFields]
+    values.splice(index, 1)
+    setInputFields(values)
+  }
+
   const submitHandler = (e) => {
     e.preventDefault()
     try {
@@ -135,6 +176,7 @@ const ProductEditScreen = ({ match, history }) => {
           primaryImage,
           image,
           slug,
+          variant: JSON.stringify(inputFields, null, 2),
           newSlug: slugify(name),
           brand,
           category,
@@ -254,6 +296,91 @@ const ProductEditScreen = ({ match, history }) => {
                     ></Form.Control>
                   </Form.Group>
 
+                  <Form.Group>
+                    <Form.Label>Variasi : </Form.Label>
+                    {inputFields.map((inputField, index) => (
+                      <>
+                        <Row>
+                          <Col md={2}>
+                            <Form.Label>Type</Form.Label>
+                            <Form.Control
+                              key='type'
+                              type='text'
+                              name='type'
+                              placeholder='Type'
+                              value={inputField.type}
+                              onChange={(event) =>
+                                handleInputChange(index, event)
+                              }
+                            ></Form.Control>
+                          </Col>
+                          <Col md={2}>
+                            <Form.Label>Ukuran</Form.Label>
+                            <Form.Control
+                              key='ukuran'
+                              type='text'
+                              name='ukuran'
+                              placeholder='Ukuran'
+                              value={inputField.ukuran}
+                              onChange={(event) =>
+                                handleInputChange(index, event)
+                              }
+                            ></Form.Control>
+                          </Col>
+                          <Col md={2}>
+                            <Form.Label>Warna</Form.Label>
+                            <Form.Control
+                              key='warna'
+                              type='text'
+                              name='warna'
+                              placeholder='Warna'
+                              value={inputField.warna}
+                              onChange={(event) =>
+                                handleInputChange(index, event)
+                              }
+                            ></Form.Control>
+                          </Col>
+                          <Col md={2}>
+                            <Form.Label>Harga</Form.Label>
+                            <Form.Control
+                              key='harga'
+                              type='text'
+                              name='harga'
+                              placeholder='Harga'
+                              value={inputField.harga}
+                              onChange={(event) =>
+                                handleInputChange(index, event)
+                              }
+                            ></Form.Control>
+                          </Col>
+                          <Col md={4}>
+                            <Row
+                              style={{
+                                marginTop: 25,
+                              }}
+                            >
+                              <Col md={6}>
+                                <CustomButton
+                                  onClicks={() => handleRemoveFields(index)}
+                                  textContent='Hapus Variasi'
+                                />
+                              </Col>
+                              <Col md={6}>
+                                <Button
+                                  variant='primary'
+                                  size='sm'
+                                  onClick={() => handleAddFields()}
+                                >
+                                  Tambah Variasi
+                                </Button>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                      </>
+                    ))}
+                  </Form.Group>
+
                   <Form.Group controlId='category'>
                     <Form.Label>Category</Form.Label>
                     <Form.Control
@@ -269,28 +396,11 @@ const ProductEditScreen = ({ match, history }) => {
                     <CKEditor
                       editor={ClassicEditor}
                       data={description}
-                      // onReady={(editor) => {
-                      //   // You can store the "editor" and use when it is needed.
-                      //   console.log('Editor is ready to use!', editor)
-                      // }}
                       onChange={(event, editor) => {
                         const data = editor.getData()
                         setDescription(data)
                       }}
-                      // onBlur={(event, editor) => {
-                      //   console.log('Blur.', editor)
-                      // }}
-                      // onFocus={(event, editor) => {
-                      //   console.log('Focus.', editor)
-                      // }}
                     />
-                    {/* <Form.Control
-                      type='text'
-                      placeholder='Enter description'
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
-                      as='textarea'
-                    ></Form.Control> */}
                   </Form.Group>
 
                   <Button type='submit' variant='primary'>
@@ -299,6 +409,8 @@ const ProductEditScreen = ({ match, history }) => {
                 </Form>
               )}
             </FormContainer>
+            {/* 
+            <pre>{JSON.stringify(inputFields, null, 2)}</pre> */}
           </Card.Body>
         </Card>
       </Aux>
