@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
-  Grid,
-  Table,
-  TableCell,
-  TableContainer,
-  TableBody,
-  TableRow,
-  Typography,
-} from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import CardMedia from '@material-ui/core/CardMedia'
+import Grid from '@material-ui/core/Grid'
+import Table from '@material-ui/core/Table'
+import TableCell from '@material-ui/core/TableCell'
+import TableContainer from '@material-ui/core/TableContainer'
+import TableBody from '@material-ui/core/TableBody'
+import TableRow from '@material-ui/core/TableRow'
+import Typography from '@material-ui/core/Typography'
 import Carousel from 'react-material-ui-carousel'
 import Divider from '@material-ui/core/Divider'
 
@@ -25,13 +23,13 @@ import { listProductDetails } from '../actions/productActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 
-const ProductScreen = ({ match }) => {
+const ProductScreen = ({ match, history }) => {
   const dispatch = useDispatch()
 
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
 
-  const imagessss = product.image
+  const imagessss = product && product.image ? product.image : []
   // const res = imagessss.map((position) => ({ position }))
 
   const res = imagessss.map((data) => {
@@ -57,13 +55,13 @@ const ProductScreen = ({ match }) => {
   return (
     <>
       <Meta
-        title='Product Title'
+        title={product.name}
         description='Product Description'
         keyword='Product Keywords'
-        contentUrl=''
+        contentUrl={`http://localhost:3000/${product.slug}`}
         contentType=''
         contentDescription=''
-        contentPrimaryImage=''
+        contentPrimaryImage={product.primaryImage}
       />
 
       <Grid item xs={12}>
@@ -153,6 +151,7 @@ const ProductScreen = ({ match }) => {
               ? product.variant
               : []
           }
+          productId={product && product._id ? product._id : ''}
         />
       </Grid>
     </>

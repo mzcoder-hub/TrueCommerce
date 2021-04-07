@@ -14,6 +14,7 @@
     "axios": "^0.21.1",
     "fontsource-roboto": "^4.0.0",
     "infinite-react-carousel": "^1.2.11",
+    "object-scan": "^14.0.0",
     "react": "^17.0.2",
     "react-bootstrap": "^1.4.0",
     "react-dom": "^17.0.2",

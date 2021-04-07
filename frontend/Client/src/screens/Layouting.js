@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom'
 import HomeScreens from './HomeScreen'
 import ProductScreen from './ProductScreen'
 import ProductByCategoryScreen from './ProductByCategoryScreen'
+import CartScreen from './CartScreen'
 
 const Layouting = () => {
   const location = useLocation()
@@ -16,8 +17,10 @@ const Layouting = () => {
     <Grid item xs={12}>
       <Header />
       <Route path='/' component={HomeScreens} exact />
-      <Route path='/produk/:slug' component={ProductScreen} exact />
-      <Route path='/kategori' component={ProductByCategoryScreen} exact />
+      <Route path='/produk/:slug' component={ProductScreen} />
+      <Route path='/kategori' component={ProductByCategoryScreen} />
+      <Route path='/cart/:sku/:id?' component={CartScreen} />
+      <Route path='/cart/' component={CartScreen} exact />
       {splitPath[1] === 'produk' ? <></> : <NavigationBottom />}
     </Grid>
   )

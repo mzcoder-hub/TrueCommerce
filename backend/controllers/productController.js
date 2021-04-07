@@ -82,7 +82,7 @@ const createProduct = asyncHandler(async (req, res) => {
     image: '/images/sample.jpg',
     primaryImage: '/images/sample.jpg',
     brand: 'sample Brand',
-    variant: [{ type: '', ukuran: '', warna: '', harga: '' }],
+    variant: [{ stok: '', ukuran: '', warna: '', harga: '', sku: '' }],
     category: 'sample category',
     slug: 'sample-name',
     countInStock: 0,

@@ -16,7 +16,8 @@ const reviewSchema = mongoose.Schema(
 )
 
 const variantSchema = mongoose.Schema({
-  type: { type: String },
+  stok: { type: String },
+  sku: { type: String },
   ukuran: { type: String },
   warna: { type: String },
   harga: { type: Number },

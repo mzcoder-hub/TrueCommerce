@@ -31,7 +31,7 @@ const ProductEditScreen = ({ match, history }) => {
   const [image, setImage] = useState('')
   const [brand, setBrand] = useState('')
   const [category, setCategory] = useState('')
-  const [countInStock, setCountInStock] = useState(0)
+  const [countInStock, setCountInStock] = useState(total)
   const [description, setDescription] = useState('')
   const [uploading, setUploading] = useState(false)
 
@@ -132,7 +132,7 @@ const ProductEditScreen = ({ match, history }) => {
   )
 
   const [inputFields, setInputFields] = useState([
-    { type: '', ukuran: '', warna: '', harga: '' },
+    { ukuran: '', warna: '', harga: '', stok: '', sku: '' },
   ])
 
   const handleSubmit = (e) => {
@@ -140,14 +140,17 @@ const ProductEditScreen = ({ match, history }) => {
   }
   const handleInputChange = (index, event) => {
     const values = [...inputFields]
-    if (event.target.name === 'type') {
-      values[index].type = event.target.value
-    } else if (event.target.name === 'ukuran') {
-      values[index].ukuran = event.target.value
+    const theData = event.target.value
+    if (event.target.name === 'ukuran') {
+      values[index].ukuran = theData
     } else if (event.target.name === 'warna') {
-      values[index].warna = event.target.value
+      values[index].warna = theData
+    } else if (event.target.name === 'harga') {
+      values[index].harga = theData
+    } else if (event.target.name === 'stok') {
+      values[index].stok = theData
     } else {
-      values[index].harga = event.target.value
+      values[index].sku = theData
     }
 
     setInputFields(values)
@@ -181,13 +184,18 @@ const ProductEditScreen = ({ match, history }) => {
           brand,
           category,
           description,
-          countInStock,
+          countInStock: total,
         })
       )
     } catch (error) {
       console.error(error)
       setUploading(false)
     }
+  }
+
+  var total = 0
+  for (let i = 0; i < inputFields.length; i++) {
+    total = total += parseInt(inputFields[i].stok)
   }
 
   return (
@@ -286,34 +294,11 @@ const ProductEditScreen = ({ match, history }) => {
                     ></Form.Control>
                   </Form.Group>
 
-                  <Form.Group controlId='countInStock'>
-                    <Form.Label>Count In Stock</Form.Label>
-                    <Form.Control
-                      type='number'
-                      placeholder='Enter countInStock'
-                      value={countInStock}
-                      onChange={(e) => setCountInStock(e.target.value)}
-                    ></Form.Control>
-                  </Form.Group>
-
                   <Form.Group>
                     <Form.Label>Variasi : </Form.Label>
                     {inputFields.map((inputField, index) => (
                       <>
                         <Row>
-                          <Col md={2}>
-                            <Form.Label>Type</Form.Label>
-                            <Form.Control
-                              key='type'
-                              type='text'
-                              name='type'
-                              placeholder='Type'
-                              value={inputField.type}
-                              onChange={(event) =>
-                                handleInputChange(index, event)
-                              }
-                            ></Form.Control>
-                          </Col>
                           <Col md={2}>
                             <Form.Label>Ukuran</Form.Label>
                             <Form.Control
@@ -353,10 +338,37 @@ const ProductEditScreen = ({ match, history }) => {
                               }
                             ></Form.Control>
                           </Col>
-                          <Col md={4}>
+                          <Col md={2}>
+                            <Form.Label>Stok</Form.Label>
+                            <Form.Control
+                              key='Stok'
+                              type='text'
+                              name='stok'
+                              placeholder='Stok'
+                              value={inputField.stok}
+                              onChange={(event) =>
+                                handleInputChange(index, event)
+                              }
+                            ></Form.Control>
+                          </Col>
+                          <Col md={2}>
+                            <Form.Label>SKU</Form.Label>
+                            <Form.Control
+                              key='SKU'
+                              type='text'
+                              name='sku'
+                              placeholder='SKU'
+                              value={inputField.sku}
+                              onChange={(event) =>
+                                handleInputChange(index, event)
+                              }
+                            ></Form.Control>
+                          </Col>
+                          <Col md={2}>
                             <Row
                               style={{
                                 marginTop: 25,
+                                marginLeft: -30,
                               }}
                             >
                               <Col md={6}>
@@ -379,6 +391,16 @@ const ProductEditScreen = ({ match, history }) => {
                         </Row>
                       </>
                     ))}
+                  </Form.Group>
+
+                  <Form.Group controlId='countInStock'>
+                    <Form.Label>Count In Stock</Form.Label>
+                    <Form.Control
+                      type='number'
+                      placeholder='Enter countInStock'
+                      value={total}
+                      disabled
+                    ></Form.Control>
                   </Form.Group>
 
                   <Form.Group controlId='category'>
@@ -409,8 +431,7 @@ const ProductEditScreen = ({ match, history }) => {
                 </Form>
               )}
             </FormContainer>
-            {/* 
-            <pre>{JSON.stringify(inputFields, null, 2)}</pre> */}
+            {/* <pre>{JSON.stringify(inputFields, null, 2)}</pre> */}
           </Card.Body>
         </Card>
       </Aux>
