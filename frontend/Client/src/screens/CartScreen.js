@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Message from '../components/Message'
-import { addToCart } from '../actions/cartActions'
+import { addToCart, removeFromCart } from '../actions/cartActions'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
@@ -16,8 +16,28 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import Divider from '@material-ui/core/Divider'
 import { makeStyles } from '@material-ui/core/styles'
 import Avatar from '@material-ui/core/Avatar'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableContainer from '@material-ui/core/TableContainer'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
+import Paper from '@material-ui/core/Paper'
 
 const CartScreen = ({ match, location, history }) => {
+  const [open, setOpen] = useState(false)
+
+  const handleClickOpen = () => {
+    setOpen(true)
+  }
+  const handleClose = () => {
+    setOpen(false)
+  }
   const productId = match.params.id
 
   const qty = location.search ? Number(location.search.split('=')[1]) : 1
@@ -35,6 +55,8 @@ const CartScreen = ({ match, location, history }) => {
       dataVariant.push(element)
     })
   )
+
+  // console.log(dataVariant)
 
   const stokVariant = []
   cartItems.map((cartData) =>
@@ -68,14 +90,33 @@ const CartScreen = ({ match, location, history }) => {
     }
     return result
   }
+
+  function rupiahConvert(nominal) {
+    const bilangan = nominal
+
+    var number_string = bilangan.toString(),
+      split = number_string.split(','),
+      sisa = split[0].length % 3,
+      rupiah = split[0].substr(0, sisa),
+      ribuan = split[0].substr(sisa).match(/\d{1,3}/gi)
+
+    if (ribuan) {
+      const separator = sisa ? '.' : ''
+      rupiah += separator + ribuan.join('.')
+    }
+    rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah
+
+    return rupiah
+  }
+
   useEffect(() => {
     if (productId) {
       dispatch(addToCart(productId, qty, productSku))
     }
   }, [dispatch, productId, qty, productSku])
 
-  const removeFromCartHandler = () => {
-    console.log('remove cart')
+  const removeFromCartHandler = (e) => {
+    dispatch(removeFromCart(e))
   }
 
   const useStyles = makeStyles((theme) => ({
@@ -101,7 +142,7 @@ const CartScreen = ({ match, location, history }) => {
         <Button style={style}>Back</Button>
       </Link>
       {cartItems.length === 0 ? (
-        <Message childern='Your Cart is Empty' />
+        <Message childern='Keranjang Kamu Masih Kosong !!! Ayo Belanja Lagi !!!' />
       ) : (
         <>
           <Card style={{ marginBottom: 65 }}>
@@ -113,7 +154,8 @@ const CartScreen = ({ match, location, history }) => {
                     component='h1'
                     style={{ marginBottom: 10 }}
                   >
-                    Keranjang Belanja :
+                    Keranjang Belanja (
+                    {cartItems.reduce((acc, item) => acc + item.qty, 0)}) :
                   </Typography>
                   <Divider />
                   <div style={{ marginTop: 10 }}>
@@ -121,7 +163,7 @@ const CartScreen = ({ match, location, history }) => {
                       <Grid
                         container
                         spacing={1}
-                        key={item.product}
+                        key={item.product + makeid(10)}
                         style={{ height: 100 }}
                       >
                         <Grid item xs={2} sm={2} key={makeid(10)}>
@@ -135,7 +177,12 @@ const CartScreen = ({ match, location, history }) => {
                           </center>
                         </Grid>
                         <Grid item xs={6} sm={6} key={makeid(10)}>
-                          <Typography>{item.name}</Typography>
+                          <Link
+                            to={`/produk/${item.slug}`}
+                            style={{ textDecoration: 'none', color: '#000' }}
+                          >
+                            <Typography>{item.name}</Typography>
+                          </Link>
                           <div style={{ fontSize: 13 }}>
                             {dataVariant[key].ukuran}, {dataVariant[key].warna}
                           </div>
@@ -178,7 +225,9 @@ const CartScreen = ({ match, location, history }) => {
                         >
                           <DeleteIcon
                             style={{ marginLeft: 5 }}
-                            onClick={() => removeFromCartHandler(item.product)}
+                            onClick={() =>
+                              removeFromCartHandler(dataVariant[key].sku)
+                            }
                           />
                         </Grid>
                       </Grid>
@@ -188,6 +237,7 @@ const CartScreen = ({ match, location, history }) => {
                     variant='outlined'
                     color='secondary'
                     style={{ width: '100%' }}
+                    onClick={handleClickOpen}
                   >
                     Periksa
                   </Button>
@@ -195,6 +245,74 @@ const CartScreen = ({ match, location, history }) => {
               </Grid>
             </CardContent>
           </Card>
+
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby='alert-dialog-title'
+            aria-describedby='alert-dialog-description'
+          >
+            <DialogTitle id='alert-dialog-title'>
+              {'Detail Pesanan'}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id='alert-dialog-description' component='span'>
+                <TableContainer component={Paper}>
+                  <Table aria-label='simple table'>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Nama Produk</TableCell>
+                        <TableCell align='right'>Qty</TableCell>
+                        <TableCell align='right'>Harga Produk</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {cartItems.map((item, key) => (
+                        <TableRow key={dataVariant[key].sku}>
+                          <TableCell component='th' scope='row'>
+                            {item.name}-{dataVariant[key].warna}-
+                            {dataVariant[key].ukuran}
+                          </TableCell>
+                          <TableCell align='right'>{item.qty}</TableCell>
+                          <TableCell align='right'>
+                            Rp. {rupiahConvert(dataVariant[key].harga)}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                      <TableRow>
+                        <TableCell>
+                          <span style={{ float: 'right' }}>Total</span>
+                        </TableCell>
+                        <TableCell>
+                          <span style={{ float: 'right' }}>
+                            {' '}
+                            {cartItems.reduce((acc, item) => acc + item.qty, 0)}
+                          </span>
+                        </TableCell>
+                        <TableCell style={{ float: 'right' }}>
+                          <span style={{ float: 'right' }}>
+                            Rp.{' '}
+                            {rupiahConvert(
+                              cartItems.reduce(
+                                (acc, item, key) =>
+                                  acc + item.qty * dataVariant[key].harga,
+                                0
+                              )
+                            )}
+                          </span>
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button color='primary' autoFocus>
+                Bayar Sekarang
+              </Button>
+            </DialogActions>
+          </Dialog>
         </>
       )}
     </Grid>

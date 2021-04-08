@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Badge from '@material-ui/core/Badge'
 import { withStyles } from '@material-ui/core/styles'
@@ -15,6 +16,9 @@ const NavigationBottom = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
+
+  const cart = useSelector((state) => state.cart)
+  const { cartItems } = cart
 
   const StyledBadge = withStyles((theme) => ({
     badge: {
@@ -44,7 +48,7 @@ const NavigationBottom = () => {
         to='/cart'
         icon={
           <IconButton aria-label='cart'>
-            <StyledBadge badgeContent={0} color='secondary'>
+            <StyledBadge badgeContent={cartItems.length} color='secondary'>
               <ShoppingCartOutlinedIcon />
             </StyledBadge>
           </IconButton>

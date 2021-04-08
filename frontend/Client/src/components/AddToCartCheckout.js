@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { addToCart } from '../actions/cartActions'
 import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
@@ -17,11 +19,15 @@ import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
+import Snackbar from '@material-ui/core/Snackbar'
+import { Alert } from '@material-ui/lab'
 
 const AddToCartCheckout = ({ product, productId }) => {
+  const dispatch = useDispatch()
   const history = useHistory()
   const [value, setValue] = useState('')
   const [open, setOpen] = useState(false)
+  const [toasOpen, setToasOpen] = useState(false)
   const [warna, setVariantWarna] = useState('')
   const [qty, setQty] = useState(1)
   const [stok, setStok] = useState(0)
@@ -84,8 +90,29 @@ const AddToCartCheckout = ({ product, productId }) => {
     setValue('')
   }
 
-  const addtoCartHandler = () => {
-    history.push(`/cart/${sku}/${productId}?qty=${qty}`)
+  const addtoCartHandler = (e) => {
+    // console.log(e.target.dataset)
+    try {
+      if (e.target.dataset.type === 'addtocart') {
+        dispatch(addToCart(productId, qty, sku))
+        setToasOpen(true)
+        setVariantWarna('')
+        setQty(1)
+        setStok(0)
+        setSku('')
+        setVariantUkuran('')
+        setOpen(false)
+      } else {
+        dispatch(addToCart(productId, qty, sku))
+        history.push(`/cart`)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const ToastClose = () => {
+    setToasOpen(false)
   }
 
   const handleAddWarna = (e) => {
@@ -260,16 +287,33 @@ const AddToCartCheckout = ({ product, productId }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={addtoCartHandler} color='primary' autoFocus>
-            {value === 'addtocart'
-              ? 'Add To Cart'
-              : value === 'bayarsekarang'
-              ? 'Bayar Sekarang'
-              : ''}
+          <Button color='primary' autoFocus>
+            <span
+              data-type={
+                value === 'addtocart'
+                  ? 'addtocart'
+                  : value === 'bayarsekarang'
+                  ? 'bayarsekarang'
+                  : ''
+              }
+              onClick={(e) => {
+                addtoCartHandler(e)
+              }}
+            >
+              {value === 'addtocart'
+                ? 'Masukan Keranjang'
+                : value === 'bayarsekarang'
+                ? 'Bayar Sekarang'
+                : ''}
+            </span>
           </Button>
         </DialogActions>
       </Dialog>
-
+      <Snackbar open={toasOpen} autoHideDuration={3000} onClose={ToastClose}>
+        <Alert onClose={ToastClose} severity='success'>
+          Berhasil diTambahkan !!!
+        </Alert>
+      </Snackbar>
       <BottomNavigation
         value={value}
         onChange={handleChange}
