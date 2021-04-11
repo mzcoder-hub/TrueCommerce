@@ -56,7 +56,7 @@ const NavigationBottom = () => {
       />
       <BottomNavigationAction
         component={Link}
-        to='/'
+        to='/profile'
         label='Account'
         value='Account'
         icon={<AccountCircleOutlinedIcon />}

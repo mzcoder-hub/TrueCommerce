@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
@@ -7,11 +8,11 @@ import CardMedia from '@material-ui/core/CardMedia'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import CardActions from '@material-ui/core/CardActions'
-import IconButton from '@material-ui/core/IconButton'
-import { Link } from 'react-router-dom'
-import VisibilityIcon from '@material-ui/icons/Visibility'
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
 import { makeStyles } from '@material-ui/core/styles'
+// import IconButton from '@material-ui/core/IconButton'
+// import VisibilityIcon from '@material-ui/icons/Visibility'
+// import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
+
 import { listProducts } from '../actions/productActions'
 import Rated from './Rated'
 import Loading from './Loader'
@@ -112,7 +113,7 @@ const Products = ({ match }) => {
                       alignItems: 'center',
                     }}
                   >
-                    <Grid item xs={6}>
+                    {/* <Grid item xs={6}>
                       <Link
                         to={`/produk/${product.slug}`}
                         className='btn btn-light'
@@ -126,7 +127,7 @@ const Products = ({ match }) => {
                       <IconButton>
                         <AddShoppingCartIcon />
                       </IconButton>
-                    </Grid>
+                    </Grid> */}
                   </CardActions>
                 </CardActionArea>
               </Card>

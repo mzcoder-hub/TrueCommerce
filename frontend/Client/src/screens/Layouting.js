@@ -8,6 +8,11 @@ import HomeScreens from './HomeScreen'
 import ProductScreen from './ProductScreen'
 import ProductByCategoryScreen from './ProductByCategoryScreen'
 import CartScreen from './CartScreen'
+import LoginScreen from './LoginScreen'
+import RegisterScreen from './RegisterScreen'
+import ProfileScreen from './ProfileScreen'
+import ProfileEditScreen from './ProfileEditScreen'
+import ShippingScreen from './ShippingScreen'
 
 const Layouting = () => {
   const location = useLocation()
@@ -21,6 +26,11 @@ const Layouting = () => {
       <Route path='/kategori' component={ProductByCategoryScreen} />
       <Route path='/cart/:sku/:id?' component={CartScreen} />
       <Route path='/cart/' component={CartScreen} exact />
+      <Route path='/shipping/' component={ShippingScreen} exact />
+      <Route path='/profile/edit/' component={ProfileEditScreen} />
+      <Route path='/profile/' component={ProfileScreen} exact />
+      <Route path='/login/' component={LoginScreen} />
+      <Route path='/register/' component={RegisterScreen} />
       {splitPath[1] === 'produk' ? <></> : <NavigationBottom />}
     </Grid>
   )
