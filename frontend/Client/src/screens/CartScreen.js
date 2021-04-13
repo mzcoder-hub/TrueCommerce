@@ -308,9 +308,14 @@ const CartScreen = ({ match, location, history }) => {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button color='primary' autoFocus>
-                Bayar Sekarang
-              </Button>
+              <Link
+                to='/pengiriman'
+                style={{ textDecoration: 'none', color: '#000' }}
+              >
+                <Button color='primary' autoFocus>
+                  Bayar Sekarang
+                </Button>
+              </Link>
             </DialogActions>
           </Dialog>
         </>

@@ -133,3 +133,7 @@ fieldset > .countReviewPost {
   padding: 10px;
   text-decoration: none;
 }
+
+.makeStyles-button-6:hover {
+  box-shadow: none !important;
+}

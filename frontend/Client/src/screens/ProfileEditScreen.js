@@ -78,11 +78,18 @@ const ProfileEditScreen = ({ history }) => {
     if (password !== confirmPassword) {
       setMessage('Password do not match')
     } else {
-      dispatch(updateUserProfile({ id: user._id, name, email, password }))
-
-      setTimeout(function () {
-        window.location.reload()
-      }, 3000)
+      if (!password) {
+        dispatch(updateUserProfile({ id: user._id, name, email, password }))
+        setTimeout(function () {
+          window.location.reload()
+        }, 3000)
+      } else {
+        dispatch(updateUserProfile({ id: user._id, name, email, password }))
+        setTimeout(function () {
+          dispatch(logout())
+          window.location.reload()
+        }, 3000)
+      }
     }
   }
   return (

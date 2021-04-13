@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
@@ -24,7 +24,7 @@ import { logout } from '../actions/userActions'
 
 const ProfileScreen = ({ history }) => {
   const userLogin = useSelector((state) => state.userLogin)
-  const { loading, error, userInfo } = userLogin
+  const { userInfo } = userLogin
 
   // console.log(userInfo)
 
@@ -45,10 +45,6 @@ const ProfileScreen = ({ history }) => {
       history.push('/login')
     }
   }, [history, userInfo])
-
-  const ListItemLink = (props) => {
-    return <ListItem button component='a' {...props} />
-  }
 
   const logoutHandler = () => {
     dispatch(logout())
