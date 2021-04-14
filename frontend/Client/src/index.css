@@ -85,6 +85,12 @@ code {
 }
 
 @media only screen and (max-width: 500px) {
+  .MaStepBro {
+    text-decoration: none !important;
+    color: #000 !important;
+    font-size: 10px !important;
+  }
+
   .image-product {
     margin-top: -35px !important;
     width: 100% !important;
@@ -136,4 +142,9 @@ fieldset > .countReviewPost {
 
 .makeStyles-button-6:hover {
   box-shadow: none !important;
+}
+
+.MaStepBro {
+  text-decoration: none !important;
+  color: #000 !important;
 }

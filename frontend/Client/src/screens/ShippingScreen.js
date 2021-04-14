@@ -1,17 +1,79 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
+import TextField from '@material-ui/core/TextField'
+import Autocomplete from '@material-ui/lab/Autocomplete'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import CustomInput from '../components/CustomInput'
 import Button from '../components/Button'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
 
 import { saveShippingAddress } from '../actions/cartActions'
 import Steppers from '../components/Steppers'
+import {
+  listCityId,
+  listProvinceId,
+  listSubDistrictId,
+} from '../actions/postalAction'
 
 const ShippingScreen = ({ history }) => {
+  const dispatch = useDispatch()
+
+  const cart = useSelector((state) => state.cart)
+  const { shippingAddress } = cart
+
+  const postalProvince = useSelector((state) => state.postalProvince)
+  const { loading, error, province } = postalProvince
+
+  const postalCity = useSelector((state) => state.postalCity)
+  const {
+    loading: loadingCity,
+    error: errorCityList,
+    city: getCityList,
+  } = postalCity
+
+  const postalSubDistrict = useSelector((state) => state.postalSubDistrict)
+  const {
+    loading: loadingPostalSubDistrict,
+    error: errorPostalSubDistrictList,
+    success,
+    subdistrict: getPostalSubDistrictList,
+  } = postalSubDistrict
+
+  const [nameHold, setnameHold] = useState(shippingAddress.nameHold)
+  const [address, setAddress] = useState(shippingAddress.address)
+  const [provinceSelected, setProvince] = useState([shippingAddress.province])
+  const [city, setCity] = useState([shippingAddress.city])
+  const [subDisctrict, setSubDisctrict] = useState([
+    shippingAddress.subDisctrict,
+  ])
+  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode)
+  const [country, setCountry] = useState(shippingAddress.country)
+
+  useEffect(() => {
+    dispatch(listProvinceId())
+  }, [dispatch])
+
+  const submitHandler = (e) => {
+    e.preventDefault()
+    dispatch(
+      saveShippingAddress({
+        nameHold,
+        address,
+        provinceSelected,
+        city,
+        subDisctrict,
+        postalCode,
+        country,
+      })
+    )
+    history.push('/metode')
+  }
+
   const style = {
     background: 'rgb(2 2 2)',
     borderRadius: 3,
@@ -20,37 +82,6 @@ const ShippingScreen = ({ history }) => {
     height: 30,
     padding: '0 30px',
     margin: '10px',
-  }
-
-  const cart = useSelector((state) => state.cart)
-  const { shippingAddress } = cart
-
-  const [address, setAddress] = useState(shippingAddress.address)
-  const [city, setCity] = useState(shippingAddress.city)
-  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode)
-  const [country, seCountry] = useState(shippingAddress.country)
-
-  const dispatch = useDispatch()
-
-  const handleChangeAddress = (e) => {
-    setAddress(e.currentTarget.value)
-  }
-  const handleChangeCity = (e) => {
-    setCity(e.currentTarget.value)
-  }
-
-  const handleChangePostalCode = (e) => {
-    setPostalCode(e.currentTarget.value)
-  }
-
-  const handleChangeCountry = (e) => {
-    seCountry(e.currentTarget.value)
-  }
-
-  const submitHandler = (e) => {
-    e.preventDefault()
-    dispatch(saveShippingAddress({ address, city, postalCode, country }))
-    history.push('/metode')
   }
 
   return (
@@ -66,47 +97,147 @@ const ShippingScreen = ({ history }) => {
           </Typography>
           <form className='form' onSubmit={submitHandler}>
             <CustomInput
+              labelText='Atas Nama'
+              id='nameHolder'
+              formControlProps={{
+                fullWidth: true,
+              }}
+              inputProps={{
+                autoComplete: 'new-password',
+              }}
+              handleChange={(e) => setnameHold(e.currentTarget.value)}
+              type='text'
+              value={nameHold}
+            />
+
+            <CustomInput
               labelText='Alamat Lengkap'
               id='address'
               formControlProps={{
                 fullWidth: true,
               }}
-              handleChange={handleChangeAddress}
+              inputProps={{
+                autoComplete: 'new-password',
+              }}
+              handleChange={(e) => setAddress(e.currentTarget.value)}
               type='text'
               value={address}
             />
 
-            <CustomInput
-              labelText='Kota'
-              id='city'
-              formControlProps={{
-                fullWidth: true,
-              }}
-              handleChange={handleChangeCity}
-              type='text'
-              value={city}
-            />
-            <CustomInput
-              labelText='Kode Pos'
-              id='postalCode'
-              formControlProps={{
-                fullWidth: true,
-              }}
-              handleChange={handleChangePostalCode}
-              type='text'
-              value={postalCode}
-            />
-            <CustomInput
-              labelText='Negara'
-              id='country'
-              formControlProps={{
-                fullWidth: true,
-              }}
-              handleChange={handleChangeCountry}
-              type='text'
-              value={country}
-            />
-            <br />
+            {loading ? (
+              <Loader />
+            ) : (
+              <>
+                {error && (
+                  <Message
+                    severity='error'
+                    childern={error}
+                    style={{ textAlign: 'left' }}
+                  />
+                )}
+                <Autocomplete
+                  id='provinsi'
+                  freeSolo
+                  options={province}
+                  getOptionLabel={(option) => option.province}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label='Provinsi'
+                      margin='normal'
+                      variant='outlined'
+                    />
+                  )}
+                  onChange={(event, newValue) => {
+                    if (newValue) {
+                      setProvince(newValue)
+                      dispatch(listCityId(newValue.province_id))
+                    } else {
+                      setProvince('')
+                    }
+                  }}
+                />
+              </>
+            )}
+
+            {loadingCity ? (
+              <Loader />
+            ) : (
+              <>
+                {errorCityList && (
+                  <Message
+                    severity='error'
+                    childern={errorCityList}
+                    style={{ textAlign: 'left' }}
+                  />
+                )}
+                <Autocomplete
+                  id='kota'
+                  freeSolo
+                  disabled={getCityList.length === 0 ? true : false}
+                  options={getCityList}
+                  getOptionLabel={(option) =>
+                    `${option.type}${' '}${option.city_name}`
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label='Kota'
+                      margin='normal'
+                      variant='outlined'
+                    />
+                  )}
+                  onChange={(event, newValue) => {
+                    if (newValue) {
+                      setCity(newValue)
+                      if (newValue.city_id) {
+                        dispatch(listSubDistrictId(newValue.city_id))
+                      }
+                    } else {
+                      setCity('')
+                    }
+                  }}
+                />
+              </>
+            )}
+
+            {loadingPostalSubDistrict ? (
+              <Loader />
+            ) : (
+              <>
+                {errorPostalSubDistrictList && (
+                  <Message
+                    severity='error'
+                    childern={errorPostalSubDistrictList}
+                    style={{ textAlign: 'left' }}
+                  />
+                )}
+                <Autocomplete
+                  id='kecamatan'
+                  freeSolo
+                  options={getPostalSubDistrictList}
+                  disabled={
+                    getPostalSubDistrictList.length === 0 ? true : false
+                  }
+                  getOptionLabel={(option) => option.subdistrict_name}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label='Kecamatan'
+                      margin='normal'
+                      variant='outlined'
+                    />
+                  )}
+                  onChange={(event, newValue) => {
+                    if (newValue) {
+                      setSubDisctrict(newValue)
+                    } else {
+                      setSubDisctrict('')
+                    }
+                  }}
+                />
+              </>
+            )}
             <Button
               type='submit'
               color='github'

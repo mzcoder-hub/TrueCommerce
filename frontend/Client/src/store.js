@@ -13,6 +13,11 @@ import {
   userRegisterReducer,
   userUpdateProfileReducer,
 } from './reducers/userReducers'
+import {
+  postalCityReducers,
+  postalProvinceReducers,
+  postalSubDistrictReducers,
+} from './reducers/postalReducers'
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -22,6 +27,9 @@ const reducer = combineReducers({
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
+  postalProvince: postalProvinceReducers,
+  postalCity: postalCityReducers,
+  postalSubDistrict: postalSubDistrictReducers,
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')

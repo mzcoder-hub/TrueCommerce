@@ -11,6 +11,7 @@ import userRoutes from './routes/userRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
 import paymentRoutes from './routes/paymentRoutes.js'
 import uploadRoutes from './routes/uploadRoutes.js'
+import postalRoutes from './routes/postalRoutes.js'
 
 //GET CONFIG ENV
 dotenv.config()
@@ -32,6 +33,7 @@ connectDB()
 app.use('/api/products', productRoutes)
 // v2
 app.use('/api/products', productRoutes)
+app.use('/api/postal', postalRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/orders', orderRoutes)
 app.use('/api/payment', paymentRoutes)

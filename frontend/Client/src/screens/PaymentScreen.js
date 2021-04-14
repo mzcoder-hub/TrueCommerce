@@ -48,7 +48,7 @@ const PaymentScreens = ({ history }) => {
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(savePaymentMethod(value))
-    history.push('/verifikasi')
+    history.push('/ekspedisi')
   }
 
   return (

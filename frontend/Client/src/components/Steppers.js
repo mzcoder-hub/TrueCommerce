@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Stepper from '@material-ui/core/Stepper'
 import Step from '@material-ui/core/Step'
 import StepLabel from '@material-ui/core/StepLabel'
+import { Grid } from '@material-ui/core'
 
 const Steppers = ({ step }) => {
   const useStyles = makeStyles((theme) => ({
@@ -59,7 +60,7 @@ const Steppers = ({ step }) => {
             <StepLabel>
               <Link
                 to={label === 'null' ? '#' : `/${label}`}
-                style={{ textDecoration: 'none', color: '#000' }}
+                className='MaStepBro'
               >
                 {label === 'null' ? '' : label.toUpperCase()}
               </Link>
