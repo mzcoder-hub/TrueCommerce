@@ -37,7 +37,13 @@ const Layouting = () => {
       <Route path='/profile/edit' component={ProfileEditScreen} />
       <Route path='/login' component={LoginScreen} />
       <Route path='/register' component={RegisterScreen} />
-      {splitPath[1] === 'produk' ? <></> : <NavigationBottom />}
+      {splitPath[1] === 'produk' ? (
+        <></>
+      ) : splitPath[1] === 'verifikasi' ? (
+        <></>
+      ) : (
+        <NavigationBottom />
+      )}
     </Grid>
   )
 }

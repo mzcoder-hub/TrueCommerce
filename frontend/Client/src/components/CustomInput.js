@@ -29,6 +29,7 @@ const CustomInput = (props) => {
     handleChange,
     type,
     value,
+    disabled,
   } = props
 
   const labelClasses = classNames({
@@ -75,6 +76,7 @@ const CustomInput = (props) => {
           disabled: classes.disabled,
           underline: underlineClasses,
         }}
+        disabled={disabled}
         id={id}
         onChange={handleChange}
         {...inputProps}
@@ -96,6 +98,7 @@ CustomInput.propTypes = {
   error: PropTypes.bool,
   success: PropTypes.bool,
   white: PropTypes.bool,
+  disabled: PropTypes.bool,
 }
 
 export default CustomInput

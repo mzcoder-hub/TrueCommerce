@@ -8,6 +8,9 @@ import {
   POSTAL_GET_SUBDISTRICT_REQUEST,
   POSTAL_GET_SUBDISTRICT_SUCCESS,
   POSTAL_GET_SUBDISTRICT_FAIL,
+  POSTAL_GET_COST_DELIVERY_REQUEST,
+  POSTAL_GET_COST_DELIVERY_SUCCESS,
+  POSTAL_GET_COST_DELIVERY_FAIL,
 } from '../constants/postalConstants'
 
 export const postalProvinceReducers = (state = { province: [] }, action) => {
@@ -46,6 +49,26 @@ export const postalSubDistrictReducers = (
     case POSTAL_GET_SUBDISTRICT_SUCCESS:
       return { loading: false, subdistrict: action.payload, success: true }
     case POSTAL_GET_SUBDISTRICT_FAIL:
+      return { error: action.payload }
+    default:
+      return state
+  }
+}
+
+export const postalCostDeliveryReducers = (
+  state = { listCostDeliveryData: [] },
+  action
+) => {
+  switch (action.type) {
+    case POSTAL_GET_COST_DELIVERY_REQUEST:
+      return { loading: true, listCostDeliveryData: [] }
+    case POSTAL_GET_COST_DELIVERY_SUCCESS:
+      return {
+        loading: false,
+        listCostDeliveryData: action.payload,
+        success: true,
+      }
+    case POSTAL_GET_COST_DELIVERY_FAIL:
       return { error: action.payload }
     default:
       return state

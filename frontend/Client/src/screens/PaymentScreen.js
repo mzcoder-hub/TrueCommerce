@@ -37,7 +37,7 @@ const PaymentScreens = ({ history }) => {
       history.push('/pengiriman')
     }
     setValue(paymentMethod)
-  }, [shippingAddress, paymentMethod])
+  }, [shippingAddress, paymentMethod, history])
 
   const dispatch = useDispatch()
 
@@ -68,7 +68,7 @@ const PaymentScreens = ({ history }) => {
               <RadioGroup
                 aria-label='method'
                 name='method'
-                value={value}
+                value={value ? value : 'null'}
                 onChange={handleChange}
               >
                 <FormControlLabel

@@ -76,4 +76,31 @@ const getSubDistrict = asyncHandler(async (req, res) => {
     })
 })
 
-export { getProvince, getCity, getSubDistrict, getCityByProvinceId }
+const getCostDelivery = asyncHandler(async (req, res) => {
+  const payload = {
+    origin: '501',
+    originType: 'city',
+    destination: '574',
+    destinationType: 'subdistrict',
+    weight: 250,
+    courier: 'jnt:jne:sicepat:ninja',
+  }
+  await axios
+    .post('https://pro.rajaongkir.com/api/cost', payload, {
+      headers: {
+        key: apiKey,
+      },
+    })
+    .then(async (response) => {
+      const costDelivery = response.data.rajaongkir.results
+      return res.json(costDelivery)
+    })
+})
+
+export {
+  getProvince,
+  getCity,
+  getSubDistrict,
+  getCityByProvinceId,
+  getCostDelivery,
+}

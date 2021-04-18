@@ -15,6 +15,7 @@ import {
 } from './reducers/userReducers'
 import {
   postalCityReducers,
+  postalCostDeliveryReducers,
   postalProvinceReducers,
   postalSubDistrictReducers,
 } from './reducers/postalReducers'
@@ -30,6 +31,7 @@ const reducer = combineReducers({
   postalProvince: postalProvinceReducers,
   postalCity: postalCityReducers,
   postalSubDistrict: postalSubDistrictReducers,
+  costDelivery: postalCostDeliveryReducers,
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')
@@ -44,15 +46,25 @@ const shippingAddressFromStorage = localStorage.getItem('shippingAddress')
   ? JSON.parse(localStorage.getItem('shippingAddress'))
   : {}
 
-const paymentMethodFromStorage = localStorage.getItem('paymentMethod')
-  ? JSON.parse(localStorage.getItem('paymentMethod'))
-  : {}
+// const paymentMethodFromStorage = localStorage.getItem('paymentMethod')
+//   ? JSON.parse(localStorage.getItem('paymentMethod'))
+//   : {}
+
+// const serviceDeliveryFromStorage = localStorage.getItem('serviceDelivery')
+//   ? JSON.parse(localStorage.getItem('serviceDelivery'))
+//   : {}
+
+// const costDeliveryFromStorage = localStorage.getItem('listCostDeliveryData')
+//   ? JSON.parse(localStorage.getItem('listCostDeliveryData'))
+//   : {}
+//   costDelivery: costDeliveryFromStorage,
 
 const initialState = {
   cart: {
     cartItems: cartItemsFromStorage,
     shippingAddress: shippingAddressFromStorage,
-    paymentMethod: paymentMethodFromStorage,
+    // paymentMethod: paymentMethodFromStorage,
+    // serviceDelivery: serviceDeliveryFromStorage,
   },
   userLogin: { userInfo: userInfoFromStorage },
 }

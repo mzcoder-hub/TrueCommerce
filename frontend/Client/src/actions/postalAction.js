@@ -3,6 +3,9 @@ import {
   POSTAL_GET_CITY_FAIL,
   POSTAL_GET_CITY_REQUEST,
   POSTAL_GET_CITY_SUCCESS,
+  POSTAL_GET_COST_DELIVERY_FAIL,
+  POSTAL_GET_COST_DELIVERY_REQUEST,
+  POSTAL_GET_COST_DELIVERY_SUCCESS,
   POSTAL_GET_PROVINCE_FAIL,
   POSTAL_GET_PROVINCE_REQUEST,
   POSTAL_GET_PROVINCE_SUCCESS,
@@ -121,6 +124,60 @@ export const listSubDistrictId = (id) => async (dispatch, getState) => {
     // }
     dispatch({
       type: POSTAL_GET_SUBDISTRICT_FAIL,
+      payload: message,
+    })
+  }
+}
+
+export const listCostDelivery = (requiredData) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    dispatch({ type: POSTAL_GET_COST_DELIVERY_REQUEST })
+
+    const payload = {
+      origin: '4910',
+      originType: 'city',
+      destination: requiredData.city_id,
+      destinationType: requiredData.type,
+      weight: requiredData.weight,
+      courier: 'jnt:jne:sicepat:ninja',
+    }
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.post(
+      `/api/postal/costDelivery`,
+      payload,
+      config
+    )
+
+    dispatch({
+      type: POSTAL_GET_COST_DELIVERY_SUCCESS,
+      payload: data,
+    })
+
+    localStorage.setItem('costDelivery', JSON.stringify(data))
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message
+    // if (message === 'Not authorized, token failed') {
+    //   dispatch(logout())
+    // }
+    dispatch({
+      type: POSTAL_GET_COST_DELIVERY_FAIL,
       payload: message,
     })
   }

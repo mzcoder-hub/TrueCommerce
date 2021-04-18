@@ -80,6 +80,7 @@ const CartScreen = ({ match, location, history }) => {
     height: 30,
     padding: '0 30px',
     margin: '10px',
+    textDecoration: 'none',
   }
   function makeid(length) {
     var result = ''

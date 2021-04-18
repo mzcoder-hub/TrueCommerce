@@ -4,6 +4,7 @@ import {
   CART_ITEM_RESET,
   CART_REMOVE_ITEM,
   CART_SAVE_PAYMENT_METHOD,
+  CART_SAVE_SERVICE_DELIVERY_METHOD,
   CART_SAVE_SHIPPING_ADDRESS,
 } from '../constants/cartConstants'
 
@@ -68,4 +69,13 @@ export const savePaymentMethod = (data) => (dispatch) => {
   })
 
   localStorage.setItem('paymentMethod', JSON.stringify(data))
+}
+
+export const saveServiceDeliveryMethod = (data) => (dispatch) => {
+  dispatch({
+    type: CART_SAVE_SERVICE_DELIVERY_METHOD,
+    payload: data,
+  })
+
+  localStorage.setItem('servicedelivery', JSON.stringify(data))
 }
