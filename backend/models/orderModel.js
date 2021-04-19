@@ -16,9 +16,19 @@ const orderSchema = mongoose.Schema(
       {
         name: { type: String, required: true },
         qty: { type: Number, required: true },
-        image: { type: String, required: true },
-        price: { type: Number, required: true },
-        sku: { type: String, required: true },
+        slug: { type: String, required: true },
+        countInStock: { type: Number, required: true },
+        primaryImage: { type: String, required: true },
+        variant: [
+          {
+            _id: { type: String, required: true },
+            ukuran: { type: String, required: true },
+            warna: { type: String, required: true },
+            harga: { type: Number, required: true },
+            stok: { type: Number, required: true },
+            sku: { type: String, required: true },
+          },
+        ],
         product: {
           type: mongoose.Schema.Types.ObjectId,
           required: true,
@@ -27,16 +37,65 @@ const orderSchema = mongoose.Schema(
       },
     ],
     shippingAddress: {
+      nameHold: { type: String, required: true },
       address: { type: String, required: true },
-      city: { type: String, required: true },
-      postalCode: { type: String, required: true },
-      country: { type: String, required: true },
+      provinceSelected: {
+        province_id: {
+          type: String,
+          required: true,
+        },
+        province: {
+          type: String,
+          required: true,
+        },
+      },
+      city: {
+        city_id: {
+          type: String,
+        },
+        province_id: {
+          type: String,
+        },
+        province: {
+          type: String,
+        },
+        type: {
+          type: String,
+        },
+        city_name: {
+          type: String,
+        },
+        postal_code: {
+          type: String,
+        },
+      },
+      subDistrict: {
+        subdistrict_id: { type: String },
+        province_id: { type: String },
+        province: { type: String },
+        city_id: { type: String },
+        city: { type: String },
+        type: { type: String },
+        subdistrict_name: { type: String },
+      },
     },
     paymentResult: {
       id: { type: String },
+      paycode: { type: String },
       status: { type: String },
       update_time: { type: Date },
       email_address: { type: String },
+    },
+
+    instructions: [
+      {
+        title: { type: String },
+        steps: [],
+      },
+    ],
+    serviceDelivery: {
+      type: String,
+      required: true,
     },
     paymentMethod: {
       type: String,
@@ -44,7 +103,6 @@ const orderSchema = mongoose.Schema(
     },
     taxPrice: {
       type: Number,
-      required: true,
       default: 0.0,
     },
     shippingPrice: {

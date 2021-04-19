@@ -30,7 +30,7 @@ const Steppers = ({ step }) => {
   }
 
   function getSteps() {
-    return ['pengiriman', 'metode', 'ekspedisi', 'verifikasi', 'pembayaran']
+    return ['pengiriman', 'metode', 'ekspedisi', 'verifikasi']
   }
 
   const classes = useStyles()
@@ -48,8 +48,6 @@ const Steppers = ({ step }) => {
             ? 2
             : step === '4'
             ? 3
-            : step === '5'
-            ? 4
             : 0
         }
         alternativeLabel

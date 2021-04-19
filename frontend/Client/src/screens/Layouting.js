@@ -16,6 +16,7 @@ import ShippingScreen from './ShippingScreen'
 import PaymentScreens from './PaymentScreen'
 import PlaceOrderScreen from './PlaceOrderScreen'
 import DeliveryScreen from './DeliveryScreen'
+import PaymentProceedScreen from './PaymentProceedScreen'
 
 const Layouting = () => {
   const location = useLocation()
@@ -33,6 +34,7 @@ const Layouting = () => {
       <Route path='/metode' component={PaymentScreens} />
       <Route path='/ekspedisi' component={DeliveryScreen} />
       <Route path='/verifikasi' component={PlaceOrderScreen} />
+      <Route path='/pembayaran/:id' component={PaymentProceedScreen} />
       <Route path='/profile' component={ProfileScreen} exact />
       <Route path='/profile/edit' component={ProfileEditScreen} />
       <Route path='/login' component={LoginScreen} />

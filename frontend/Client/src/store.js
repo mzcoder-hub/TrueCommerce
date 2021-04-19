@@ -19,6 +19,11 @@ import {
   postalProvinceReducers,
   postalSubDistrictReducers,
 } from './reducers/postalReducers'
+import {
+  orderCreateReducer,
+  orderDetailsReducer,
+  orderRequestPayReducer,
+} from './reducers/orderReducers'
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -32,6 +37,9 @@ const reducer = combineReducers({
   postalCity: postalCityReducers,
   postalSubDistrict: postalSubDistrictReducers,
   costDelivery: postalCostDeliveryReducers,
+  orderCreate: orderCreateReducer,
+  orderDetails: orderDetailsReducer,
+  payRequest: orderRequestPayReducer,
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')

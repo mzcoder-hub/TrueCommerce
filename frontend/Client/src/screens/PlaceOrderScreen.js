@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -19,8 +19,6 @@ import CheckoutNavigation from '../components/CheckoutNavigation'
 
 const PlaceOrderScreen = ({ history }) => {
   const [splitPath, setSplitPath] = useState([])
-
-  const dispatch = useDispatch()
 
   function rupiahConvert(nominal) {
     if (nominal) {
@@ -44,7 +42,7 @@ const PlaceOrderScreen = ({ history }) => {
   const { cartItems, shippingAddress, paymentMethod, serviceDelivery } = cart
 
   const totalHarga = []
-  cartItems.map((value) => totalHarga.push(value.variant[0].harga))
+  cartItems.map((value) => totalHarga.push(value.variant[0].harga * value.qty))
 
   useEffect(() => {
     if (!serviceDelivery) {
@@ -70,6 +68,7 @@ const PlaceOrderScreen = ({ history }) => {
     padding: '0 30px',
     margin: '10px',
   }
+
   return (
     <Grid item xs={12} style={{ marginTop: 10, marginBottom: 65 }}>
       <Link to='/ekspedisi'>
@@ -187,7 +186,7 @@ const PlaceOrderScreen = ({ history }) => {
                         </TableRow>
                         <TableRow>
                           <TableCell style={{ fontWeight: 'bold' }}>
-                            {rupiahConvert(cart.variant[0].harga)}
+                            {rupiahConvert(cart.variant[0].harga * cart.qty)}
                           </TableCell>
                           <TableCell style={{ textAlign: 'right' }}>
                             <Link
@@ -230,7 +229,7 @@ const PlaceOrderScreen = ({ history }) => {
           </Table>
         </CardContent>
       </Card>
-      <CheckoutNavigation totalPrice={allPrice} />
+      <CheckoutNavigation shippingPrice={splitPath[2]} totalPrice={allPrice} />
     </Grid>
   )
 }

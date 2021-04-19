@@ -77,12 +77,12 @@ const PaymentScreens = ({ history }) => {
                   label='Pilih Pembayaran'
                 />
                 <FormControlLabel
-                  value='BRI'
+                  value='BRIVA'
                   control={<Radio />}
                   label='Bank BRI'
                 />
                 <FormControlLabel
-                  value='BCA'
+                  value='BCAVA'
                   control={<Radio />}
                   label='Bank BCA'
                 />

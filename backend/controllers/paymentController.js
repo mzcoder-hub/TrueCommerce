@@ -5,7 +5,7 @@ import axios from 'axios'
 import crypto from 'crypto'
 
 // @Desc   Request Payment to Tripay API
-// @Route  POST /api/payment/:ID/pay
+// @Route  POST /api/payment/:ID/payrequest
 // @access Private
 
 const requestPaymentTripay = asyncHandler(async (req, res) => {
@@ -28,11 +28,19 @@ const requestPaymentTripay = asyncHandler(async (req, res) => {
 
     orderItems.forEach((element) => {
       const items = {
+        sku: element.variant[0].sku,
         name: element.name,
-        price: element.price,
+        price: element.variant[0].harga,
         quantity: element.qty,
       }
       orderItemDetail.push(items)
+    })
+
+    orderItemDetail.push({
+      sku: 'ONGKIR-CODE',
+      name: 'ongkir',
+      price: order.shippingPrice,
+      quantity: 1,
     })
 
     const payload = {
@@ -62,13 +70,14 @@ const requestPaymentTripay = asyncHandler(async (req, res) => {
       .then(async (response) => {
         order.paymentResult = {
           id: response.data.data.reference,
+          paycode: response.data.data.pay_code,
           status: response.data.data.status,
           update_time: Date.now(),
           email_address: response.data.data.customer_email,
         }
         order.taxPrice = response.data.data.fee
         order.totalPrice = response.data.data.amount
-
+        order.instructions = response.data.data.instructions
         // console.log(order)
         const instruction = response.data.data.instructions
         // console.log(instruction)
@@ -76,8 +85,7 @@ const requestPaymentTripay = asyncHandler(async (req, res) => {
         return res.json({ insertInvoice, instruction })
       })
       .catch((e) => {
-        console.log(e)
-        console.log(e.response)
+        return res.json(e.response.data)
       })
   } else {
     res.status(404)
@@ -100,7 +108,11 @@ const callbackPaymentTripay = async (req, res) => {
     res.status(401)
     throw Error('Tidak Memiliki Hak Akses')
   } else {
-    invoice.isPaid = true
+    if (req.body.status === 'PAID') {
+      invoice.isPaid = true
+    } else {
+      invoice.isPaid = false
+    }
     invoice.paidAt = Date.now()
     invoice.paymentResult.update_time = Date.now()
     invoice.paymentResult.status = req.body.status
