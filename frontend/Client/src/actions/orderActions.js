@@ -10,7 +10,7 @@ import {
   ORDER_REQUEST_PAY_REQUEST,
   ORDER_REQUEST_PAY_SUCCESS,
 } from '../constants/orderConstants'
-import { CART_ITEM_RESET } from '../constants/cartConstants'
+import { resetCart } from './cartActions'
 
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
@@ -34,7 +34,6 @@ export const createOrder = (order) => async (dispatch, getState) => {
       type: ORDER_CREATE_SUCCESS,
       payload: data,
     })
-    // dispatch({ type: CART_ITEM_RESET })
   } catch (error) {
     dispatch({
       type: ORDER_CREATE_FAIL,

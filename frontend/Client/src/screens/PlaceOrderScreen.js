@@ -85,49 +85,51 @@ const PlaceOrderScreen = ({ history }) => {
             Verifikasi Data :
           </Typography>
           <div style={{ margin: 10 }}>
-            <Table>
-              <TableBody>
-                <TableRow>
-                  <TableCell>Atas Nama</TableCell>
-                  <TableCell>{shippingAddress.nameHold}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Alamat Tujuan</TableCell>
-                  <TableCell>
-                    {shippingAddress.address}{' '}
-                    {shippingAddress.subDisctrict.subdistrict_name}
-                    {', '}
-                    {shippingAddress.city.city_name}
-                    {', '}
-                    {shippingAddress.provinceSelected.province}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Metode Pembayaran</TableCell>
-                  <TableCell>
-                    <img
-                      src={
-                        paymentMethod === 'BCA'
-                          ? '/images/BCA.svg'
-                          : '/images/BRI.svg'
-                      }
-                      alt={paymentMethod === 'BCA' ? 'BANK BCA' : 'BANK BNI'}
-                      style={{ width: 150, height: 'auto' }}
-                    />
-                    <Link
-                      to='/metode'
-                      style={{
-                        textDecoration: 'none',
-                        color: '#000',
-                        marginLeft: 100,
-                      }}
-                    >
-                      Edit
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+            {shippingAddress && (
+              <Table>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Atas Nama</TableCell>
+                    <TableCell>{shippingAddress.nameHold}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Alamat Tujuan</TableCell>
+                    <TableCell>
+                      {shippingAddress.address}{' '}
+                      {shippingAddress.subDisctrict.subdistrict_name}
+                      {', '}
+                      {shippingAddress.city.city_name}
+                      {', '}
+                      {shippingAddress.provinceSelected.province}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Metode Pembayaran</TableCell>
+                    <TableCell>
+                      <img
+                        src={
+                          paymentMethod === 'BCA'
+                            ? '/images/BCA.svg'
+                            : '/images/BRI.svg'
+                        }
+                        alt={paymentMethod === 'BCA' ? 'BANK BCA' : 'BANK BNI'}
+                        style={{ width: 150, height: 'auto' }}
+                      />
+                      <Link
+                        to='/metode'
+                        style={{
+                          textDecoration: 'none',
+                          color: '#000',
+                          marginLeft: 100,
+                        }}
+                      >
+                        Edit
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            )}
           </div>
         </CardContent>
       </Card>

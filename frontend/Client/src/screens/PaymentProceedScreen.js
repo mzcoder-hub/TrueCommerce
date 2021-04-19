@@ -18,14 +18,30 @@ import { getOrderDetails } from '../actions/orderActions'
 import Loader from '../components/Loader'
 
 const PaymentProceedScreen = ({ history, match }) => {
+  function rupiahConvert(nominal) {
+    if (nominal) {
+      var rupiah = ''
+      var numberrev = nominal.toString().split('').reverse().join('')
+      for (var i = 0; i < numberrev.length; i++)
+        if (i % 3 === 0) rupiah += numberrev.substr(i, 3) + '.'
+      return (
+        'Rp. ' +
+        rupiah
+          .split('', rupiah.length - 1)
+          .reverse()
+          .join('')
+      )
+    } else {
+      return nominal
+    }
+  }
+
   const dispatch = useDispatch()
 
   const orderDetails = useSelector((state) => state.orderDetails)
   const { order, loading, error } = orderDetails
   const [expanded, setExpanded] = useState('')
   const [toasOpen, setToasOpen] = useState(false)
-  const [codeVa, setCodeVa] = useState('')
-  const [copied, setCopied] = useState(false)
 
   const ToastClose = () => {
     setToasOpen(false)
@@ -131,6 +147,14 @@ const PaymentProceedScreen = ({ history, match }) => {
                   </Box>
                 </Box>
               </Grid>
+              <Grid item xs={12} key='nominal' style={{ textAlign: 'center' }}>
+                <Box display='flex' justifyContent='center'>
+                  <Box p={1} style={{ fontWeight: 'bold' }}>
+                    Nominal : <br />
+                    {rupiahConvert(order.totalPrice)}
+                  </Box>
+                </Box>
+              </Grid>
               <Grid item xs={12} key='Code-VA' style={{ textAlign: 'center' }}>
                 <TextField
                   id='standard-basic'
@@ -143,7 +167,6 @@ const PaymentProceedScreen = ({ history, match }) => {
                 <CopyToClipboard
                   text={order.paymentResult.paycode}
                   onCopy={() => {
-                    setCopied(true)
                     setToasOpen(true)
                   }}
                 >

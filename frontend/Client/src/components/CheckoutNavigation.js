@@ -5,6 +5,7 @@ import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
 
 import { createOrder, sendRequestPay } from '../actions/orderActions'
+import { resetCart } from '../actions/cartActions'
 
 const CheckoutNavigation = ({ shippingPrice, totalPrice }) => {
   const dispatch = useDispatch()
@@ -21,7 +22,8 @@ const CheckoutNavigation = ({ shippingPrice, totalPrice }) => {
     if (success) {
       dispatch(sendRequestPay(order._id))
     }
-    if (successRequest) {
+    if (successRequest === true) {
+      dispatch(resetCart())
       history.push(`/pembayaran/${order._id}`)
     }
     // eslint-disable-next-line
