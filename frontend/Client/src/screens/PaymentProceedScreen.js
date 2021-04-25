@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
@@ -17,7 +16,7 @@ import { Box, Button, TextField } from '@material-ui/core'
 import { getOrderDetails } from '../actions/orderActions'
 import Loader from '../components/Loader'
 
-const PaymentProceedScreen = ({ history, match }) => {
+const PaymentProceedScreen = ({ match }) => {
   function rupiahConvert(nominal) {
     if (nominal) {
       var rupiah = ''
@@ -39,7 +38,7 @@ const PaymentProceedScreen = ({ history, match }) => {
   const dispatch = useDispatch()
 
   const orderDetails = useSelector((state) => state.orderDetails)
-  const { order, loading, error } = orderDetails
+  const { order, loading } = orderDetails
   const [expanded, setExpanded] = useState('')
   const [toasOpen, setToasOpen] = useState(false)
 
@@ -63,6 +62,7 @@ const PaymentProceedScreen = ({ history, match }) => {
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false)
   }
+
   const AccordionDetails = withStyles((theme) => ({
     root: {
       padding: theme.spacing(2),

@@ -8,6 +8,15 @@ import {
   ORDER_REQUEST_PAY_REQUEST,
   ORDER_REQUEST_PAY_SUCCESS,
   ORDER_REQUEST_PAY_FAIL,
+  ORDER_LIST_PAID_REQUEST,
+  ORDER_LIST_PAID_SUCCESS,
+  ORDER_LIST_PAID_FAIL,
+  ORDER_LIST_UNPAID_REQUEST,
+  ORDER_LIST_UNPAID_SUCCESS,
+  ORDER_LIST_UNPAID_FAIL,
+  ORDER_LIST_DELIVERED_REQUEST,
+  ORDER_LIST_DELIVERED_SUCCESS,
+  ORDER_LIST_DELIVERED_FAIL,
 } from '../constants/orderConstants'
 
 export const orderCreateReducer = (state = {}, action) => {
@@ -46,6 +55,54 @@ export const orderDetailsReducer = (
     case ORDER_DETAILS_SUCCESS:
       return { loading: false, order: action.payload }
     case ORDER_DETAILS_FAIL:
+      return { loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
+
+export const orderListPaidReducer = (
+  state = { loading: true, list: [] },
+  action
+) => {
+  switch (action.type) {
+    case ORDER_LIST_PAID_REQUEST:
+      return { ...state, loading: true }
+    case ORDER_LIST_PAID_SUCCESS:
+      return { loading: false, list: action.payload }
+    case ORDER_LIST_PAID_FAIL:
+      return { loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
+
+export const orderListUnPaidReducer = (
+  state = { loading: true, list: [] },
+  action
+) => {
+  switch (action.type) {
+    case ORDER_LIST_UNPAID_REQUEST:
+      return { ...state, loading: true }
+    case ORDER_LIST_UNPAID_SUCCESS:
+      return { loading: false, list: action.payload }
+    case ORDER_LIST_UNPAID_FAIL:
+      return { loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
+
+export const orderListDeliveredReducer = (
+  state = { loading: true, list: [] },
+  action
+) => {
+  switch (action.type) {
+    case ORDER_LIST_DELIVERED_REQUEST:
+      return { ...state, loading: true }
+    case ORDER_LIST_DELIVERED_SUCCESS:
+      return { loading: false, list: action.payload }
+    case ORDER_LIST_DELIVERED_FAIL:
       return { loading: false, error: action.payload }
     default:
       return state

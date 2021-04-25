@@ -1,3 +1,4 @@
+import e from 'express'
 import asyncHandler from 'express-async-handler'
 import Order from '../models/orderModel.js'
 
@@ -130,21 +131,54 @@ const getOrders = asyncHandler(async (req, res) => {
 })
 
 // @Desc   Get Paid Orders
-// @Route  GET /api/orders/paid
-// @access Private/Admin
+// @Route  GET /api/orders/paid && /api/orders/paid/:ID
+// @access Private
 
 const getOrdersPaid = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ isPaid: true })
-  res.json(orders)
+  if (req.params.id) {
+    const orders = await Order.find({
+      isPaid: true,
+      user: req.params.id,
+    })
+    res.json(orders)
+  } else {
+    const orders = await Order.find({ isPaid: true })
+    res.json(orders)
+  }
 })
 
 // @Desc   Get Paid Orders
-// @Route  GET /api/orders/unpaid
-// @access Private/Admin
+// @Route  GET /api/orders/unpaid && /api/orders/unpaid/:ID
+// @access Private
 
 const getOrdersUnPaid = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ isPaid: false }).populate('user', 'id name')
-  res.json(orders)
+  if (req.params.id) {
+    const orders = await Order.find({
+      isPaid: false,
+      user: req.params.id,
+    })
+    res.json(orders)
+  } else {
+    const orders = await Order.find({ isPaid: false })
+    res.json(orders)
+  }
+})
+
+// @Desc   Get Paid Orders
+// @Route  GET /api/orders/delivered && /api/orders/delivered/:ID
+// @access Private
+
+const getOrdersDelivered = asyncHandler(async (req, res) => {
+  if (req.params.id) {
+    const orders = await Order.find({
+      isDelivered: true,
+      user: req.params.id,
+    })
+    res.json(orders)
+  } else {
+    const orders = await Order.find({ isDelivered: true })
+    res.json(orders)
+  }
 })
 
 export {
@@ -156,4 +190,5 @@ export {
   updateOrderToDelivered,
   getOrdersPaid,
   getOrdersUnPaid,
+  getOrdersDelivered,
 }

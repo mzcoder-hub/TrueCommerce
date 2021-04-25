@@ -46,7 +46,7 @@ const ShippingScreen = ({ history }) => {
   } = postalSubDistrict
 
   const cart = useSelector((state) => state.cart)
-  const { shippingAddress } = cart
+  const { cartItems, shippingAddress } = cart
 
   const [nameHold, setnameHold] = useState('')
   const [address, setAddress] = useState('')
@@ -60,7 +60,10 @@ const ShippingScreen = ({ history }) => {
 
   useEffect(() => {
     dispatch(listProvinceId())
-  }, [dispatch])
+    if (cartItems.lenght === 0) {
+      history.push('/cart')
+    }
+  }, [dispatch, cartItems, history])
 
   const submitHandler = (e) => {
     e.preventDefault()

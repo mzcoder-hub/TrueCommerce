@@ -3,10 +3,9 @@ import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Products from '../components/Products'
-import { Link } from 'react-router-dom'
 import Meta from '../components/Meta'
 
-const ProductByCategoryScreen = () => {
+const ProductByCategoryScreen = ({ history }) => {
   const style = {
     background: 'rgb(2 2 2)',
     borderRadius: 3,
@@ -16,6 +15,10 @@ const ProductByCategoryScreen = () => {
     padding: '0 30px',
     margin: '10px',
   }
+  const returnHandler = () => {
+    history.goBack()
+  }
+
   return (
     <>
       <Meta
@@ -28,9 +31,9 @@ const ProductByCategoryScreen = () => {
         contentPrimaryImage=''
       />
       <Grid style={{ marginBottom: 65 }}>
-        <Link to='/'>
-          <Button style={style}>Back</Button>
-        </Link>
+        <Button style={style} onClick={returnHandler}>
+          Back
+        </Button>
         <Typography
           component='h1'
           style={{

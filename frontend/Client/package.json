@@ -12,6 +12,7 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.1",
+    "dayjs": "^1.10.4",
     "fontsource-roboto": "^4.0.0",
     "infinite-react-carousel": "^1.2.11",
     "object-scan": "^14.0.0",

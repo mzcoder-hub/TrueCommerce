@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
@@ -57,7 +56,7 @@ const DeliveryScreen = ({ history }) => {
   }
 
   const cart = useSelector((state) => state.cart)
-  const { paymentMethod, shippingAddress } = cart
+  const { cartItems, paymentMethod, shippingAddress } = cart
 
   const costDelivery = useSelector((state) => state.costDelivery)
   const { listCostDeliveryData, loading } = costDelivery
@@ -66,6 +65,9 @@ const DeliveryScreen = ({ history }) => {
     if (!paymentMethod) {
       history.push('/metode')
     }
+    if (cartItems.length === 0) {
+      history.push('/cart')
+    }
     const requiredData = {
       destination: shippingAddress.subDisctrict.subdistrict_id,
       destinationType: shippingAddress.subDisctrict.type,
@@ -73,7 +75,7 @@ const DeliveryScreen = ({ history }) => {
     }
 
     dispatch(listCostDelivery(requiredData))
-  }, [dispatch, shippingAddress, history, paymentMethod])
+  }, [dispatch, shippingAddress, history, paymentMethod, cartItems])
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -132,11 +134,15 @@ const DeliveryScreen = ({ history }) => {
     expanded: {},
   })(MuiAccordionSummary)
 
+  const returnHandler = () => {
+    history.goBack()
+  }
+
   return (
     <Grid item xs={12} style={{ marginTop: 10 }}>
-      <Link to='/metode'>
-        <Button style={style}>Back</Button>
-      </Link>
+      <Button style={style} onClick={returnHandler}>
+        Back
+      </Button>
       <Steppers step='3' />
       <Card style={{ marginBottom: 65 }}>
         <CardContent>

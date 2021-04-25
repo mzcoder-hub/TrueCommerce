@@ -6,11 +6,19 @@ import {
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
+  ORDER_LIST_PAID_FAIL,
+  ORDER_LIST_PAID_REQUEST,
+  ORDER_LIST_PAID_SUCCESS,
+  ORDER_LIST_UNPAID_FAIL,
+  ORDER_LIST_UNPAID_REQUEST,
+  ORDER_LIST_UNPAID_SUCCESS,
   ORDER_REQUEST_PAY_FAIL,
   ORDER_REQUEST_PAY_REQUEST,
   ORDER_REQUEST_PAY_SUCCESS,
+  ORDER_LIST_DELIVERED_REQUEST,
+  ORDER_LIST_DELIVERED_SUCCESS,
+  ORDER_LIST_DELIVERED_FAIL,
 } from '../constants/orderConstants'
-import { resetCart } from './cartActions'
 
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
@@ -101,6 +109,102 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: ORDER_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const listOrdersPaid = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ORDER_LIST_PAID_REQUEST,
+    })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+    const { data } = await Axios.get(`/api/orders/paid/${id}`, config)
+
+    dispatch({
+      type: ORDER_LIST_PAID_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: ORDER_LIST_PAID_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const listOrdersUnPaid = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ORDER_LIST_UNPAID_REQUEST,
+    })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+    const { data } = await Axios.get(`/api/orders/unpaid/${id}`, config)
+
+    dispatch({
+      type: ORDER_LIST_UNPAID_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: ORDER_LIST_UNPAID_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const listOrdersDelivered = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ORDER_LIST_DELIVERED_REQUEST,
+    })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+    const { data } = await Axios.get(`/api/orders/delivered/${id}`, config)
+
+    dispatch({
+      type: ORDER_LIST_DELIVERED_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: ORDER_LIST_DELIVERED_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

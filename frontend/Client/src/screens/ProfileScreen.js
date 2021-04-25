@@ -78,7 +78,7 @@ const ProfileScreen = ({ history }) => {
               </ListItem>
             </Link>
             <Link
-              to='/profile/edit'
+              to={`/profile/unpaid`}
               style={{ textDecoration: 'none', color: '#000' }}
             >
               <ListItem button>
@@ -88,18 +88,28 @@ const ProfileScreen = ({ history }) => {
                 <ListItemText primary='Belum Dibayar' />
               </ListItem>
             </Link>
-            <ListItem button>
-              <ListItemIcon>
-                <MoveToInboxIcon />
-              </ListItemIcon>
-              <ListItemText primary='Dikemas' />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon>
-                <LocalShippingIcon />
-              </ListItemIcon>
-              <ListItemText primary='Dikirim' />
-            </ListItem>
+            <Link
+              to={`/profile/paid`}
+              style={{ textDecoration: 'none', color: '#000' }}
+            >
+              <ListItem button>
+                <ListItemIcon>
+                  <MoveToInboxIcon />
+                </ListItemIcon>
+                <ListItemText primary='Dikemas' />
+              </ListItem>
+            </Link>
+            <Link
+              to={`/profile/delivered`}
+              style={{ textDecoration: 'none', color: '#000' }}
+            >
+              <ListItem button>
+                <ListItemIcon>
+                  <LocalShippingIcon />
+                </ListItemIcon>
+                <ListItemText primary='Dikirim' />
+              </ListItem>
+            </Link>
             <ListItem button>
               <ListItemIcon>
                 <SettingsIcon />

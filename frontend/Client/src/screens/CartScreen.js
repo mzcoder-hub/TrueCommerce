@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Message from '../components/Message'
-import { addToCart, removeFromCart } from '../actions/cartActions'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
@@ -28,6 +27,8 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
+
+import { addToCart, removeFromCart } from '../actions/cartActions'
 
 const CartScreen = ({ match, location, history }) => {
   const [open, setOpen] = useState(false)
@@ -136,12 +137,18 @@ const CartScreen = ({ match, location, history }) => {
       height: theme.spacing(7),
     },
   }))
+
   const classes = useStyles()
+
+  const returnHandler = () => {
+    history.goBack()
+  }
+
   return (
     <Grid item xs={12} key={makeid(10)}>
-      <Link to='/'>
-        <Button style={style}>Back</Button>
-      </Link>
+      <Button style={style} onClick={returnHandler}>
+        Back
+      </Button>
       {cartItems.length === 0 ? (
         <Message childern='Keranjang Kamu Masih Kosong !!! Ayo Belanja Lagi !!!' />
       ) : (

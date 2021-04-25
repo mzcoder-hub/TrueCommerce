@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import CustomInput from '../components/CustomInput'
-import Button from '../components/Button'
+import Buttons from '../components/Button'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import {
@@ -92,8 +93,26 @@ const ProfileEditScreen = ({ history }) => {
       }
     }
   }
+
+  const style = {
+    background: 'rgb(2 2 2)',
+    borderRadius: 3,
+    border: 0,
+    color: 'white',
+    height: 30,
+    padding: '0 30px',
+    margin: '10px',
+  }
+
+  const returnHandler = () => {
+    history.goBack()
+  }
+
   return (
     <Grid item xs={12} style={{ marginTop: 10 }}>
+      <Button style={style} onClick={returnHandler}>
+        Back
+      </Button>
       <Card style={{ marginBottom: 65 }}>
         <CardContent>
           {message && <Message severity='error' childern={message} />}
@@ -143,17 +162,17 @@ const ProfileEditScreen = ({ history }) => {
               handleChange={handleConfirmPassword}
               type={showPassword ? 'text' : 'password'}
             />
-            <Button color='github' className='form__custom-button' size='sm'>
+            <Buttons color='github' className='form__custom-button' size='sm'>
               <span onClick={showPasswordHandler}>Lihat Password</span>
-            </Button>
+            </Buttons>
             <br />
-            <Button
+            <Buttons
               type='submit'
               color='github'
               className='form__custom-button'
             >
               Perbarui
-            </Button>
+            </Buttons>
           </form>
         </CardContent>
       </Card>

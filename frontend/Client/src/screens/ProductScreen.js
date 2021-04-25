@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
@@ -52,6 +51,10 @@ const ProductScreen = ({ match, history }) => {
     margin: '10px',
   }
 
+  const returnHandler = () => {
+    history.goBack()
+  }
+
   return (
     <>
       <Meta
@@ -65,9 +68,9 @@ const ProductScreen = ({ match, history }) => {
       />
 
       <Grid item xs={12}>
-        <Link to='/'>
-          <Button style={style}>Back</Button>
-        </Link>
+        <Button style={style} onClick={returnHandler}>
+          Back
+        </Button>
         <Carousel>
           {res.map(({ position }) => (
             <Card key={position}>

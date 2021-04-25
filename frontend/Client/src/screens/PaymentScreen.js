@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
@@ -28,7 +27,7 @@ const PaymentScreens = ({ history }) => {
   }
 
   const cart = useSelector((state) => state.cart)
-  const { shippingAddress, paymentMethod } = cart
+  const { cartItems, shippingAddress, paymentMethod } = cart
 
   const [value, setValue] = useState('null')
 
@@ -36,8 +35,11 @@ const PaymentScreens = ({ history }) => {
     if (!shippingAddress) {
       history.push('/pengiriman')
     }
+    if (cartItems.length === 0) {
+      history.push('/cart')
+    }
     setValue(paymentMethod)
-  }, [shippingAddress, paymentMethod, history])
+  }, [shippingAddress, paymentMethod, cartItems, history])
 
   const dispatch = useDispatch()
 
@@ -51,11 +53,15 @@ const PaymentScreens = ({ history }) => {
     history.push('/ekspedisi')
   }
 
+  const returnHandler = () => {
+    history.goBack()
+  }
+
   return (
     <Grid item xs={12} style={{ marginTop: 10 }}>
-      <Link to='/pengiriman'>
-        <Button style={style}>Back</Button>
-      </Link>
+      <Button style={style} onClick={returnHandler}>
+        Back
+      </Button>
       <Steppers step='2' />
       <Card style={{ marginBottom: 65 }}>
         <CardContent>

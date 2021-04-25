@@ -156,12 +156,7 @@ const RegisterScreen = ({ history, location }) => {
               </form>
             </Grid>
             <Grid item xs={12} style={{ textAlign: 'center' }}>
-              Sudah punya akun?{' '}
-              <Link
-                to={redirect ? `/register?redirect=${redirect}` : '/register'}
-              >
-                Login
-              </Link>
+              Sudah punya akun? <Link to='/login'>Login</Link>
             </Grid>
           </Grid>
         </CardContent>

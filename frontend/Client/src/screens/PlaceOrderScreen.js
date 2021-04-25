@@ -50,7 +50,11 @@ const PlaceOrderScreen = ({ history }) => {
     } else {
       setSplitPath(serviceDelivery.split('-'))
     }
-  }, [history, serviceDelivery])
+
+    if (cartItems.length === 0) {
+      history.push('/cart')
+    }
+  }, [history, serviceDelivery, cartItems])
 
   var total = 0
   for (var i = 0; i < totalHarga.length; i++) {
@@ -69,11 +73,15 @@ const PlaceOrderScreen = ({ history }) => {
     margin: '10px',
   }
 
+  const returnHandler = () => {
+    history.goBack()
+  }
+
   return (
     <Grid item xs={12} style={{ marginTop: 10, marginBottom: 65 }}>
-      <Link to='/ekspedisi'>
-        <Button style={style}>Back</Button>
-      </Link>
+      <Button style={style} onClick={returnHandler}>
+        Back
+      </Button>
       <Steppers step='4' />
       <Card style={{ marginBottom: 10 }} key='key1'>
         <CardContent style={{ padding: 0 }} key='key1'>

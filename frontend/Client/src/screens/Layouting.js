@@ -18,6 +18,10 @@ import PlaceOrderScreen from './PlaceOrderScreen'
 import DeliveryScreen from './DeliveryScreen'
 import PaymentProceedScreen from './PaymentProceedScreen'
 
+import PaidScreen from './Profile/PaidScreen'
+import UnPaidScreen from './Profile/UnPaidScreen'
+import DeliveredScreen from './Profile/DeliveredScreen'
+
 const Layouting = () => {
   const location = useLocation()
   const splitPath = location.pathname.split('/')
@@ -37,6 +41,9 @@ const Layouting = () => {
       <Route path='/pembayaran/:id' component={PaymentProceedScreen} />
       <Route path='/profile' component={ProfileScreen} exact />
       <Route path='/profile/edit' component={ProfileEditScreen} />
+      <Route path='/profile/unpaid' component={UnPaidScreen} />
+      <Route path='/profile/paid' component={PaidScreen} />
+      <Route path='/profile/delivered' component={DeliveredScreen} />
       <Route path='/login' component={LoginScreen} />
       <Route path='/register' component={RegisterScreen} />
       {splitPath[1] === 'produk' ? (
