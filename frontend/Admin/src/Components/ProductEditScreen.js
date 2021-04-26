@@ -15,12 +15,16 @@ import {
 } from '../store/Actions/productActions'
 import { PRODUCT_DETAILS_RESET, PRODUCT_UPDATE_RESET } from '../store/constant'
 import Aux from '../hoc/_Aux'
+import { listCategory } from '../store/Actions/categoryActions'
 
 const ProductEditScreen = ({ match, history }) => {
   const dispatch = useDispatch()
 
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
+
+  const categoryList = useSelector((state) => state.categoryList)
+  const { loading: categoryLoad, category, error: categoryError } = categoryList
 
   const productId = match.params.slug
 
@@ -30,7 +34,7 @@ const ProductEditScreen = ({ match, history }) => {
   const [primaryImage, setPrimaryImage] = useState('')
   const [image, setImage] = useState('')
   const [brand, setBrand] = useState('')
-  const [category, setCategory] = useState('')
+  const [categoryProduct, setCategory] = useState('')
   const [countInStock, setCountInStock] = useState(total)
   const [description, setDescription] = useState('')
   const [uploading, setUploading] = useState(false)
@@ -57,6 +61,7 @@ const ProductEditScreen = ({ match, history }) => {
     } else {
       if (!product.name || product.slug !== productId) {
         dispatch(listProductDetails(productId))
+        dispatch(listCategory())
       } else {
         setSlug(product.slug)
         setName(product.name)
@@ -182,7 +187,7 @@ const ProductEditScreen = ({ match, history }) => {
           variant: JSON.stringify(inputFields, null, 2),
           newSlug: slugify(name),
           brand,
-          category,
+          category: categoryProduct,
           description,
           countInStock: total,
         })
@@ -403,7 +408,25 @@ const ProductEditScreen = ({ match, history }) => {
                     ></Form.Control>
                   </Form.Group>
 
-                  <Form.Group controlId='category'>
+                  <Form.Group controlId='exampleForm.ControlSelect1'>
+                    <Form.Label>Example select</Form.Label>
+                    <Form.Control
+                      as='select'
+                      value={categoryProduct}
+                      onChange={(e) => setCategory(e.target.value)}
+                    >
+                      <option key='pilih' value='pilih'>
+                        Pilih Category
+                      </option>
+                      {category.map((x) => (
+                        <option key={x._id} value={x._id}>
+                          {x.name}
+                        </option>
+                      ))}
+                    </Form.Control>
+                  </Form.Group>
+
+                  {/* <Form.Group controlId='category'>
                     <Form.Label>Category</Form.Label>
                     <Form.Control
                       type='text'
@@ -411,7 +434,7 @@ const ProductEditScreen = ({ match, history }) => {
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
                     ></Form.Control>
-                  </Form.Group>
+                  </Form.Group> */}
 
                   <Form.Group controlId='description'>
                     <Form.Label>Description</Form.Label>

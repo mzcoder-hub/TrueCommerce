@@ -47,73 +47,73 @@ const OrderListScreen = ({ history }) => {
     <>
       <Row>
         <Col md={12} className='my-5'>
-        <Card>
-          <Card.Body>
-          {loading ? (
-            <Loader />
-          ) : error ? (
-            <Message variant='danger'>{error}</Message>
-          ) : (
-            <Table responsive>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>USER</th>
-                  <th>DATE</th>
-                  <th>TOTAL</th>
-                  <th>PAID</th>
-                  <th>DELIVERED</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-              {orders.map((order) => (
-                  <tr key={order._id}>
-                    <td>{order.orderId}</td>
-                    <td>{order.user && order.user.name}</td>
-                    <td>{order.createdAt.substring(0, 10)}</td>
-                    <td>{order.totalPrice}</td>
-                    <td>
-                      {order.isPaid ? (
-                        <Button variant='success' disabled>
-                          {order.paidAt.substring(0, 10)}
-                        </Button>
-                      ) : (
-                        <Button variant='danger' disabled>
-                          Not Paid
-                        </Button>
-                      )}
-                    </td>
-                    <td>
-                      {order.isDelivered ? (
-                        <center>
-                          <Button variant='success' disabled>
-                            {order.deliveredAt.substring(0, 10)}
-                          </Button>
-                        </center>
-                      ) : (
-                        <center>
-                          <Button variant='danger' disabled>
-                            Not Delivered yet
-                          </Button>
-                        </center>
-                      )}
-                    </td>
-                    <td>
-                      <LinkContainer to={`/penjualan/detail/${order._id}`}>
-                        <Button variant='light' className='btn-sm'>
-                          Details
-                        </Button>
-                      </LinkContainer>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          )}
-        </Card.Body>
-      </Card>
-      </Col>
+          <Card>
+            <Card.Body>
+              {loading ? (
+                <Loader />
+              ) : error ? (
+                <Message variant='danger'>{error}</Message>
+              ) : (
+                <Table responsive>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>USER</th>
+                      <th>DATE</th>
+                      <th>TOTAL</th>
+                      <th>PAID</th>
+                      <th>DELIVERED</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {orders.map((order) => (
+                      <tr key={order._id}>
+                        <td>{order.orderId}</td>
+                        <td>{order.user && order.user.name}</td>
+                        <td>{order.createdAt.substring(0, 10)}</td>
+                        <td>{order.totalPrice}</td>
+                        <td>
+                          {order.isPaid ? (
+                            <Button variant='success' disabled>
+                              {order.paidAt.substring(0, 10)}
+                            </Button>
+                          ) : (
+                            <Button variant='danger' disabled>
+                              Not Paid
+                            </Button>
+                          )}
+                        </td>
+                        <td>
+                          {order.isDelivered ? (
+                            <center>
+                              <Button variant='success' disabled>
+                                {order.deliveredAt.substring(0, 10)}
+                              </Button>
+                            </center>
+                          ) : (
+                            <center>
+                              <Button variant='danger' disabled>
+                                Not Delivered yet
+                              </Button>
+                            </center>
+                          )}
+                        </td>
+                        <td>
+                          <LinkContainer to={`/penjualan/detail/${order._id}`}>
+                            <Button variant='light' className='btn-sm'>
+                              Details
+                            </Button>
+                          </LinkContainer>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              )}
+            </Card.Body>
+          </Card>
+        </Col>
       </Row>
     </>
   )

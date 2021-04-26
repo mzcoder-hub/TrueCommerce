@@ -12,6 +12,7 @@ import orderRoutes from './routes/orderRoutes.js'
 import paymentRoutes from './routes/paymentRoutes.js'
 import uploadRoutes from './routes/uploadRoutes.js'
 import postalRoutes from './routes/postalRoutes.js'
+import categoryRoutes from './routes/categoryRoutes.js'
 
 //GET CONFIG ENV
 dotenv.config()
@@ -33,6 +34,7 @@ connectDB()
 app.use('/api/products', productRoutes)
 // v2
 app.use('/api/products', productRoutes)
+app.use('/api/category', categoryRoutes)
 app.use('/api/postal', postalRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/orders', orderRoutes)
@@ -72,7 +74,7 @@ app.use(errorHandler)
 
 //CONNECTED TO SERVER PORT
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 3504
 
 app.listen(
   PORT,
