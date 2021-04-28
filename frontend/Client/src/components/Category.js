@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
@@ -8,12 +9,18 @@ import IconButton from '@material-ui/core/IconButton'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Tooltip from '@material-ui/core/Tooltip'
-import tShirts from './Icons/cloth.svg'
-import trousers from './Icons/trousers.svg'
-import shorts from './Icons/shorts.svg'
-import sandals from './Icons/sandals.svg'
+import Slider from 'react-slick'
+
+import KemejaPria from './Icons/KemejaPria.png'
+import BajuPria from './Icons/BajuPria.png'
+import BajuWanita from './Icons/BajuWanita.png'
+import MuslimWanita from './Icons/MuslimWanita.png'
+import Loader from './Loader'
 
 const Category = () => {
+  const categoryList = useSelector((state) => state.categoryList)
+  const { category, page, loading, pages } = categoryList
+
   const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -38,6 +45,18 @@ const Category = () => {
   }
 
   const classes = useStyles()
+
+  const settings = {
+    // customPaging: function (i) {
+    //   return <a>{i}</a>
+    // },
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  }
+
   return (
     <div className={classes.root}>
       <Card className={classes.root}>
@@ -46,102 +65,51 @@ const Category = () => {
           component='span'
           style={{ cursor: 'default' }}
         >
-          <CardContent style={{ marginTop: -30, textAlign: 'center' }}>
-            <Grid container spacing={1}>
-              <Grid item xs={3}>
-                <BootstrapTooltip title='Kaos'>
-                  <Link to='/kategori'>
-                    <IconButton>
-                      <img
-                        src={tShirts}
-                        style={{ width: 80, height: 80 }}
-                        alt='Cloth'
-                      />
-                    </IconButton>
-                  </Link>
-                </BootstrapTooltip>
-                <Typography
-                  gutterBottom
-                  component='h6'
-                  style={{ textAlign: 'center' }}
-                >
-                  Kaos
-                </Typography>
-              </Grid>
-              <Grid item xs={3}>
-                <BootstrapTooltip title=' Celana Panjang'>
-                  <Link to='/kategori'>
-                    <IconButton>
-                      <img
-                        src={trousers}
-                        style={{ width: 80, height: 80 }}
-                        alt='Cloth'
-                      />
-                    </IconButton>
-                  </Link>
-                </BootstrapTooltip>
-                <Typography
-                  gutterBottom
-                  component='h6'
-                  style={{ textAlign: 'center' }}
-                >
-                  Celana Panjang
-                </Typography>
-              </Grid>
-              <Grid item xs={3}>
-                <BootstrapTooltip title=' Celana Pendek'>
-                  <Link to='/kategori'>
-                    <IconButton>
-                      <img
-                        src={shorts}
-                        style={{ width: 80, height: 80 }}
-                        alt='Cloth'
-                      />
-                    </IconButton>
-                  </Link>
-                </BootstrapTooltip>
-                <Typography
-                  gutterBottom
-                  component='h6'
-                  style={{ textAlign: 'center' }}
-                >
-                  Celana Pendek
-                </Typography>
-              </Grid>
-              <Grid item xs={3}>
-                <BootstrapTooltip title='Sandals'>
-                  <Link to='/kategori'>
-                    <IconButton>
-                      <img
-                        src={sandals}
-                        style={{ width: 80, height: 80 }}
-                        alt='Cloth'
-                      />
-                    </IconButton>
-                  </Link>
-                </BootstrapTooltip>
-                <Typography
-                  gutterBottom
-                  component='h6'
-                  style={{ textAlign: 'center' }}
-                >
-                  Sandals
-                </Typography>
-              </Grid>
-
-              {/* <Grid item xs={3}>
-                Sepatu
-              </Grid>
-              <Grid item xs={3}>
-                Category
-              </Grid>
-              <Grid item xs={3}>
-                Category
-              </Grid>
-              <Grid item xs={3}>
-                Category
-              </Grid> */}
-            </Grid>
+          <CardContent className='cardContentCategory'>
+            <Slider {...settings} style={{ margin: 10 }}>
+              <div>
+                <Grid container spacing={1}>
+                  {loading ? (
+                    <Loader />
+                  ) : (
+                    category.map((val, key) =>
+                      val.slug === 'uncategorize' ? (
+                        ''
+                      ) : (
+                        <Grid item xs={3} key={val.name}>
+                          <BootstrapTooltip title={val.name}>
+                            <Link to={`/kategori/${val.slug}`}>
+                              <IconButton>
+                                <img
+                                  src={
+                                    val.icon === 'KemejaPria'
+                                      ? KemejaPria
+                                      : val.icon === 'BajuPria'
+                                      ? BajuPria
+                                      : val.icon === 'BajuWanita'
+                                      ? BajuWanita
+                                      : MuslimWanita
+                                  }
+                                  className='categoryImages'
+                                  alt={val.name}
+                                />
+                              </IconButton>
+                            </Link>
+                          </BootstrapTooltip>
+                          <Typography
+                            gutterBottom
+                            component='h6'
+                            className='categoryTitle'
+                          >
+                            {val.name}
+                          </Typography>
+                        </Grid>
+                      )
+                    )
+                  )}
+                </Grid>
+              </div>
+            </Slider>
           </CardContent>
         </CardActionArea>
       </Card>

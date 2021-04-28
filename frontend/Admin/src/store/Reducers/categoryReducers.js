@@ -30,7 +30,7 @@ export const categoryListReducer = (
     case CATEGORY_LIST_SUCCESS:
       return {
         loading: false,
-        category: action.payload,
+        category: action.payload.category,
       }
     case CATEGORY_LIST_FAIL:
       return { loading: false, error: action.payload }

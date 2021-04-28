@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Form, Button, Card } from 'react-bootstrap'
+import { Form, Button, Card, Row, Col } from 'react-bootstrap'
 import Message from './Compo/Message'
 import Loader from './Compo/Loader'
 import FormContainer from './Compo/FormContainer'
@@ -10,6 +10,11 @@ import {
   updateCategory,
 } from '../store/Actions/categoryActions'
 import { CATEGORY_DETAIL_RESET, CATEGORY_UPDATE_RESET } from '../store/constant'
+
+import KemejaPria from '../assets/images/KemejaPria.png'
+import BajuPria from '../assets/images/BajuPria.png'
+import BajuWanita from '../assets/images/BajuWanita.png'
+import MuslimWanita from '../assets/images/MuslimWanita.png'
 
 const CategoryEditScreen = ({ match, history }) => {
   const dispatch = useDispatch()
@@ -119,6 +124,46 @@ const CategoryEditScreen = ({ match, history }) => {
                     value={icon}
                     onChange={(e) => setIcon(e.target.value)}
                   ></Form.Control>
+                </Form.Group>
+
+                <Form.Group controlId='icon'>
+                  <Form.Label>Isi Icon dengan Code Dibawah ini</Form.Label>
+                  <div>
+                    <Row>
+                      <Col xs={3} style={{ textAlign: 'center' }}>
+                        <img
+                          src={KemejaPria}
+                          alt='KemejaPria'
+                          style={{ width: '100%' }}
+                        />
+                        KemejaPria{' '}
+                      </Col>
+                      <Col xs={3} style={{ textAlign: 'center' }}>
+                        <img
+                          src={BajuPria}
+                          alt='BajuPria'
+                          style={{ width: '100%' }}
+                        />
+                        BajuPria{' '}
+                      </Col>
+                      <Col xs={3} style={{ textAlign: 'center' }}>
+                        <img
+                          src={BajuWanita}
+                          alt='BajuWanita'
+                          style={{ width: '100%' }}
+                        />
+                        BajuWanita{' '}
+                      </Col>
+                      <Col xs={3} style={{ textAlign: 'center' }}>
+                        <img
+                          src={MuslimWanita}
+                          alt='MuslimWanita'
+                          style={{ width: '100%' }}
+                        />
+                        MuslimWanita{' '}
+                      </Col>
+                    </Row>
+                  </div>
                 </Form.Group>
 
                 <Button type='submit' variant='primary'>

@@ -78,39 +78,31 @@ const CategoryListScreen = ({ history }) => {
                         <td>{item.name}</td>
                         <td>{item.slug}</td>
                         <td>
-                          {item.slug === 'uncategorize' ? (
-                            <>
-                              <strong>Default Category</strong>
-                            </>
-                          ) : (
-                            <>
-                              <LinkContainer to={`/kategori/${item.slug}/edit`}>
-                                <Button
-                                  className='label theme-bg text-white f-12'
-                                  title='Edit'
-                                >
-                                  {' '}
-                                  Edit
-                                  <li
-                                    className='feather icon-edit-1'
-                                    style={{ listStyleType: 'none' }}
-                                  ></li>
-                                </Button>
-                              </LinkContainer>
-                              <Button
-                                title='Delete'
-                                className='label theme-bg2 text-white f-12'
-                                onClick={() => categoryDeleteHandler(item._id)}
-                              >
-                                {' '}
-                                Delete
-                                <li
-                                  className='feather icon-delete'
-                                  style={{ listStyleType: 'none' }}
-                                ></li>
-                              </Button>
-                            </>
-                          )}
+                          <LinkContainer to={`/kategori/${item.slug}/edit`}>
+                            <Button
+                              className='label theme-bg text-white f-12'
+                              title='Edit'
+                            >
+                              {' '}
+                              Edit
+                              <li
+                                className='feather icon-edit-1'
+                                style={{ listStyleType: 'none' }}
+                              ></li>
+                            </Button>
+                          </LinkContainer>
+                          <Button
+                            title='Delete'
+                            className='label theme-bg2 text-white f-12'
+                            onClick={() => categoryDeleteHandler(item._id)}
+                          >
+                            {' '}
+                            Delete
+                            <li
+                              className='feather icon-delete'
+                              style={{ listStyleType: 'none' }}
+                            ></li>
+                          </Button>
                         </td>
                       </tr>
                     ))}

@@ -31,7 +31,7 @@ const Layouting = () => {
       <Header />
       <Route path='/' component={HomeScreens} exact />
       <Route path='/produk/:slug' component={ProductScreen} />
-      <Route path='/kategori' component={ProductByCategoryScreen} />
+      <Route path='/kategori/:slug' component={ProductByCategoryScreen} />
       <Route path='/cart/:sku/:id?' component={CartScreen} />
       <Route path='/cart' component={CartScreen} exact />
       <Route path='/pengiriman' component={ShippingScreen} />

@@ -9,7 +9,7 @@ import {
 } from '../controllers/categoryController.js'
 import { protect, admin } from '../middleware/authMiddleware.js'
 
-router.route('/').get(protect, admin, getCategoryById)
+router.route('/').get(getCategoryById)
 router.route('/create/').post(protect, admin, createCategory)
 router
   .route('/:id')

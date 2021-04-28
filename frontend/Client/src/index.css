@@ -84,6 +84,20 @@ code {
   height: 224.72px !important;
 }
 
+.categoryImages {
+  width: 80px;
+  height: 80px;
+}
+
+.categoryTitle {
+  text-align: center;
+}
+
+.cardContentCategory {
+  margin-top: -30px;
+  text-align: center;
+  height: 155px;
+}
 /* .image-product-verification {
   padding: 0px !important;
   margin-left: -16px !important;
@@ -121,6 +135,17 @@ code {
     left: 0;
     right: 0;
   }
+  .categoryImages {
+    width: 50px;
+    height: 50px;
+  }
+  .categoryTitle {
+    text-align: center;
+    font-size: 15px !important;
+  }
+  .cardContentCategory {
+    height: 125px;
+  }
 }
 .productBody > .rated > fieldset > .countReview {
   position: relative;
@@ -154,4 +179,26 @@ fieldset > .countReviewPost {
 .MaStepBro {
   text-decoration: none !important;
   color: #000 !important;
+}
+
+.slick-next,
+.slick-prev {
+  font-size: 0;
+  line-height: 0;
+  position: absolute;
+  top: 50%;
+  display: block;
+  width: 20px;
+  height: 200px;
+  padding: 0;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  cursor: pointer;
+  border: none;
+  background-color: #000;
+}
+
+.slick-next:hover,
+.slick-prev:hover {
+  background-color: #000;
 }

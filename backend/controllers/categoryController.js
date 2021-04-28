@@ -10,7 +10,7 @@ const createCategory = asyncHandler(async (req, res) => {
     name: 'Uncategorize',
     slug: 'uncategorize',
     description: 'Uncategorize Product',
-    icon: '',
+    icon: 'noIcon',
   })
 
   const createCategory = await category.save()
@@ -61,10 +61,27 @@ const getCategoryById = asyncHandler(async (req, res) => {
       throw new Error('Category not found')
     }
   } else {
-    const category = await Category.find({})
+    const pageSize = 4
+    const page = Number(req.query.pageNumber) || 1
+    const keyword = req.query.keyword
+      ? {
+          name: {
+            $regex: req.query.keyword,
+            $options: 'i',
+          },
+        }
+      : {}
+
+    const count = await Category.countDocuments({ ...keyword })
+    const category = await Category.find({ ...keyword })
+      .limit(pageSize)
+      .skip(pageSize * (page - 1))
+      .sort({ createdAt: -1 })
+
+    // const category = await Category.find({})
 
     if (category) {
-      res.json(category)
+      res.json({ category, page, pages: Math.ceil(count / pageSize) })
     } else {
       res.status(404)
       throw new Error('Category not found')

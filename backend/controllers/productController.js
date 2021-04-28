@@ -1,12 +1,13 @@
 import asyncHandler from 'express-async-handler'
 import Product from '../models/productModel.js'
+import Category from '../models/categoryModel.js'
 
 // @Desc   Fetch All Products
 // @Route  Get /api/products
 // @access Public
 
 const getProducts = asyncHandler(async (req, res) => {
-  const pageSize = 5
+  const pageSize = 6
   const page = Number(req.query.pageNumber) || 1
   const keyword = req.query.keyword
     ? {
@@ -193,6 +194,26 @@ const getTopProducts = asyncHandler(async (req, res) => {
   res.json(products)
 })
 
+// @Desc   Get to Rated Products
+// @Route  GET /api/products/category/slug
+// @access Public
+
+const getProductsByCategory = asyncHandler(async (req, res) => {
+  const getProductSlug = await Category.find({ slug: req.params.slug })
+  const convertToObject = Object.assign({}, ...getProductSlug)
+  const pageSize = 6
+  const page = Number(req.query.pageNumber) || 1
+  const count = await Product.countDocuments({
+    category: convertToObject._doc._id,
+  })
+  const products = await Product.find({ category: convertToObject._doc._id })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1))
+    .sort({ createdAt: -1 })
+
+  res.json({ products, page, pages: Math.ceil(count / pageSize) })
+})
+
 export {
   getProducts,
   getProductById,
@@ -202,4 +223,5 @@ export {
   createProductReview,
   getTopProducts,
   getProductBySlug,
+  getProductsByCategory,
 }
