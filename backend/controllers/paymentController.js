@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler'
 import Order from '../models/orderModel.js'
 import User from '../models/userModel.js'
+import Product from '../models/productModel.js'
 import axios from 'axios'
 import crypto from 'crypto'
 
@@ -110,6 +111,21 @@ const callbackPaymentTripay = async (req, res) => {
   } else {
     if (req.body.status === 'PAID') {
       invoice.isPaid = true
+
+      invoice.orderItems.forEach(async (value, key) => {
+        const getProduct = await Product.findById(value.product)
+
+        getProduct.countInStock = getProduct.countInStock - value.qty
+        const newVariantStock = value.variant[0].stok - value.qty
+
+        await Product.updateOne(
+          { 'variant._id': value.variant[0]._id },
+          { $set: { 'variant.$.stok': newVariantStock } },
+          { new: true }
+        )
+
+        await getProduct.save()
+      })
     } else {
       invoice.isPaid = false
     }

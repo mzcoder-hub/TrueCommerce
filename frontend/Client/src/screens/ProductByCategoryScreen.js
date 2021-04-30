@@ -15,7 +15,10 @@ import { makeStyles } from '@material-ui/core/styles'
 // import VisibilityIcon from '@material-ui/icons/Visibility'
 // import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
 
-import { listProducts, listProductsByCategory } from '../actions/productActions'
+import {
+  categoryDetails,
+  listProductsByCategory,
+} from '../actions/productActions'
 import Rated from '../components/Rated'
 import Loading from '../components/Loader'
 import Message from '../components/Message'
@@ -28,8 +31,12 @@ const ProductByCategoryScreen = ({ match, history }) => {
   )
   const { loading, error, products } = productListByCategory
 
+  const categoryDetail = useSelector((state) => state.categoryDetail)
+  const { category } = categoryDetail
+
   useEffect(() => {
     dispatch(listProductsByCategory(match.params.slug))
+    dispatch(categoryDetails(match.params.slug))
   }, [dispatch, match])
 
   const style = {
@@ -82,12 +89,11 @@ const ProductByCategoryScreen = ({ match, history }) => {
   return (
     <>
       <Meta
-        title='Daftar Produk Kategori Murah'
-        description='Daftar Produk Category Murah'
-        keywords='Produk Kategori Murah, Kategori Murah, Jual Kategori Murah'
-        contentUrl=''
-        contentType=''
-        contentDescription=''
+        title={`Daftar Produk ${category.name} Murah`}
+        description={`Daftar Produk  ${category.name} Murah - ${category.description}`}
+        keywords={`Produk ${category.name} Murah, ${category.name} Murah, Jual ${category.name} Murah`}
+        contentUrl={window.location.href}
+        contentDescription={`Daftar Produk  ${category.name} Murah`}
         contentPrimaryImage=''
       />
       <Grid style={{ marginBottom: 65 }}>
@@ -103,7 +109,7 @@ const ProductByCategoryScreen = ({ match, history }) => {
             padding: ' 5px',
           }}
         >
-          Produk Kategori
+          Produk {category.name}
         </Typography>
         {loading ? (
           <Loading />

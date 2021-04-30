@@ -11,11 +11,8 @@ import { protect, admin } from '../middleware/authMiddleware.js'
 
 router.route('/').get(getCategoryById)
 router.route('/create/').post(protect, admin, createCategory)
-router
-  .route('/:id')
-  .get(protect, admin, getCategoryById)
-  .delete(protect, admin, deleteCategory)
+router.route('/:id').get(getCategoryById).delete(protect, admin, deleteCategory)
 router.route('/update/:slug').put(protect, admin, updateCategory)
-router.route('/slug/:slug').get(protect, admin, getCategoryBySlug)
+router.route('/slug/:slug').get(getCategoryBySlug)
 
 export default router

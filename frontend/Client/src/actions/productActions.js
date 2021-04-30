@@ -6,6 +6,9 @@ import {
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
+  PRODUCT_CREATE_REVIEW_REQUEST,
+  PRODUCT_CREATE_REVIEW_SUCCESS,
+  PRODUCT_CREATE_REVIEW_FAIL,
   CATEGORY_LIST_FAIL,
   CATEGORY_LIST_REQUEST,
   CATEGORY_LIST_SUCCESS,
@@ -15,6 +18,9 @@ import {
   PRODUCT_LIST_by_category_REQUEST,
   PRODUCT_LIST_by_category_SUCCESS,
   PRODUCT_LIST_by_category_FAIL,
+  CATEGORY_DETAIL_ID_REQUEST,
+  CATEGORY_DETAIL_ID_SUCCESS,
+  CATEGORY_DETAIL_ID_FAIL,
 } from '../constants/productConstants'
 // import { logout } from './userActions'
 
@@ -66,6 +72,39 @@ export const listProductsByCategory = (slug, pageNumber = '') => async (
   }
 }
 
+export const createProductReview = (productSlug, review) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    dispatch({ type: PRODUCT_CREATE_REVIEW_REQUEST })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    await axios.post(`/api/products/${productSlug}/reviews`, review, config)
+    dispatch({
+      type: PRODUCT_CREATE_REVIEW_SUCCESS,
+    })
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_CREATE_REVIEW_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
 export const listProductDetails = (slug) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST })
@@ -97,19 +136,8 @@ export const listCategory = (keyword = '', pageNumber = '') => async (
   try {
     dispatch({ type: CATEGORY_LIST_REQUEST })
 
-    const {
-      userLogin: { userInfo },
-    } = getState()
-
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    }
     const { data } = await axios.get(
-      `/api/category?keyword=${keyword}&pageNumber=${pageNumber}`,
-      config
+      `/api/category?keyword=${keyword}&pageNumber=${pageNumber}`
     )
 
     dispatch({
@@ -155,6 +183,39 @@ export const categoryDetails = (slug) => async (dispatch, getState) => {
         : error.message
     dispatch({
       type: CATEGORY_DETAIL_FAIL,
+      payload: message,
+    })
+  }
+}
+
+export const categoryDetailsId = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: CATEGORY_DETAIL_ID_REQUEST })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.get(`/api/category/${id}`, config)
+
+    dispatch({
+      type: CATEGORY_DETAIL_ID_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message
+    dispatch({
+      type: CATEGORY_DETAIL_ID_FAIL,
       payload: message,
     })
   }

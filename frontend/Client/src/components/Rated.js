@@ -2,7 +2,7 @@ import React from 'react'
 import Rating from '@material-ui/lab/Rating'
 import Box from '@material-ui/core/Box'
 
-const Rated = ({ value, text, classname }) => {
+const Rated = ({ value, text, classname, style }) => {
   return (
     <>
       {classname === 'countReview' ? (
@@ -16,6 +16,7 @@ const Rated = ({ value, text, classname }) => {
               marginLeft: '-10px',
               fontSize: 13,
               background: '#ffffffcc',
+              style,
             }}
           >
             <Rating precision={0.5} value={value} readOnly />

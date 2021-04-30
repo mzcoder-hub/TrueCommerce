@@ -16,6 +16,14 @@ import {
   PRODUCT_LIST_by_category_REQUEST,
   PRODUCT_LIST_by_category_SUCCESS,
   PRODUCT_LIST_by_category_FAIL,
+  PRODUCT_CREATE_REVIEW_REQUEST,
+  PRODUCT_CREATE_REVIEW_SUCCESS,
+  PRODUCT_CREATE_REVIEW_FAIL,
+  PRODUCT_CREATE_REVIEW_RESET,
+  CATEGORY_DETAIL_ID_REQUEST,
+  CATEGORY_DETAIL_ID_SUCCESS,
+  CATEGORY_DETAIL_ID_FAIL,
+  CATEGORY_DETAIL_ID_RESET,
 } from '../constants/productConstants'
 
 export const productListReducer = (state = { products: [] }, action) => {
@@ -73,6 +81,21 @@ export const productDetailsReducer = (
   }
 }
 
+export const productReviewCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_CREATE_REVIEW_REQUEST:
+      return { loading: true }
+    case PRODUCT_CREATE_REVIEW_SUCCESS:
+      return { loading: false, success: true }
+    case PRODUCT_CREATE_REVIEW_FAIL:
+      return { loading: false, error: action.payload }
+    case PRODUCT_CREATE_REVIEW_RESET:
+      return {}
+    default:
+      return state
+  }
+}
+
 export const categoryListReducer = (
   state = { loading: true, category: [] },
   action
@@ -108,6 +131,24 @@ export const categoryDetailsReducer = (
     case CATEGORY_DETAIL_FAIL:
       return { loading: false, error: action.payload }
     case CATEGORY_DETAIL_RESET:
+      return { category: {} }
+    default:
+      return state
+  }
+}
+
+export const categoryDetailsIdReducer = (
+  state = { loading: true, category: {} },
+  action
+) => {
+  switch (action.type) {
+    case CATEGORY_DETAIL_ID_REQUEST:
+      return { loading: true, ...state }
+    case CATEGORY_DETAIL_ID_SUCCESS:
+      return { loading: false, category: action.payload }
+    case CATEGORY_DETAIL_ID_FAIL:
+      return { loading: false, error: action.payload }
+    case CATEGORY_DETAIL_ID_RESET:
       return { category: {} }
     default:
       return state
