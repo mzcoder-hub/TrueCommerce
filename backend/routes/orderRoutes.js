@@ -10,6 +10,9 @@ import {
   getOrdersPaid,
   getOrdersUnPaid,
   getOrdersDelivered,
+  updateToCancel,
+  updateToRecieved,
+  updateToReturn,
 } from '../controllers/orderController.js'
 import { protect, admin } from '../middleware/authMiddleware.js'
 
@@ -21,6 +24,9 @@ router.route('/unpaid').get(protect, admin, getOrdersUnPaid)
 router.route('/unpaid/:id').get(protect, getOrdersUnPaid)
 router.route('/delivered').get(protect, admin, getOrdersDelivered)
 router.route('/delivered/:id').get(protect, getOrdersDelivered)
+router.route('/canceled/:id').post(protect, updateToCancel)
+router.route('/recieved/:id').post(protect, updateToRecieved)
+router.route('/return/:id').put(protect, updateToReturn)
 
 router.route('/:id').get(protect, getOrderById)
 router.route('/:id/pay').put(protect, updateOrderToPaid)

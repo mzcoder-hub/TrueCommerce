@@ -17,6 +17,12 @@ import {
   ORDER_LIST_DELIVERED_REQUEST,
   ORDER_LIST_DELIVERED_SUCCESS,
   ORDER_LIST_DELIVERED_FAIL,
+  ORDER_CANCEL_REQUEST,
+  ORDER_CANCEL_SUCCESS,
+  ORDER_CANCEL_FAIL,
+  ORDER_RECIEVED_REQUEST,
+  ORDER_RECIEVED_SUCCESS,
+  ORDER_RECIEVED_FAIL,
 } from '../constants/orderConstants'
 
 export const orderCreateReducer = (state = {}, action) => {
@@ -39,6 +45,32 @@ export const orderRequestPayReducer = (state = {}, action) => {
     case ORDER_REQUEST_PAY_SUCCESS:
       return { loading: false, success: true }
     case ORDER_REQUEST_PAY_FAIL:
+      return { loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
+
+export const orderRequestCancelReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ORDER_CANCEL_REQUEST:
+      return { loading: true }
+    case ORDER_CANCEL_SUCCESS:
+      return { loading: false, success: true }
+    case ORDER_CANCEL_FAIL:
+      return { loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
+
+export const orderRequestRecievedReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ORDER_RECIEVED_REQUEST:
+      return { loading: true }
+    case ORDER_RECIEVED_SUCCESS:
+      return { loading: false, success: true }
+    case ORDER_RECIEVED_FAIL:
       return { loading: false, error: action.payload }
     default:
       return state

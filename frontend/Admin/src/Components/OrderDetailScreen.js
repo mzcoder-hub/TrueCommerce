@@ -4,7 +4,11 @@ import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from './Compo/Message'
 import Loader from './Compo/Loader'
-import { getOrderDetails, deliverOrder } from '../store/Actions/orderActions'
+import {
+  getOrderDetails,
+  deliverOrder,
+  returnOrder,
+} from '../store/Actions/orderActions'
 import { ORDER_DELIVER_RESET } from '../store/constant'
 
 const OrderScreen = ({ match, history }) => {
@@ -35,6 +39,13 @@ const OrderScreen = ({ match, history }) => {
 
   const orderDetails = useSelector((state) => state.orderDetails)
   const { order, loading, error } = orderDetails
+
+  const orderReturnDelivery = useSelector((state) => state.orderReturnDelivery)
+  const {
+    loading: loadingReturnDelivery,
+    error: errorReturnDelivery,
+    success: successReturnDelivery,
+  } = orderReturnDelivery
 
   const orderDeliver = useSelector((state) => state.orderDeliver)
   const { loading: loadingDeliver, success: successDeliver } = orderDeliver
@@ -67,6 +78,10 @@ const OrderScreen = ({ match, history }) => {
   const deliverHandler = () => {
     dispatch(deliverOrder(order))
   }
+  const returnHandler = () => {
+    dispatch(returnOrder(order._id))
+    // console.log(order._id)
+  }
   var getEkspedisi = []
   if (order.serviceDelivery) {
     getEkspedisi = order.serviceDelivery.split('-')
@@ -83,14 +98,17 @@ const OrderScreen = ({ match, history }) => {
       </Link>
       <Card>
         <Card.Body>
-          <h1>ID Pesanan {order.orderId}</h1>
+          <h1 style={{ fontSize: 25 }}>
+            ID Pesanan {order.orderId}{' '}
+            {order.returnId && '| ID Pengembalian ' + order.returnId}
+          </h1>
         </Card.Body>
       </Card>
       <Row>
         <Col md={8}>
           <ListGroup variant='flush'>
             <ListGroup.Item>
-              <h2>Pengiriman : </h2>
+              <h2 style={{ fontSize: 20 }}>Pengiriman : </h2>
               <p>
                 <strong>Atas Nama : </strong> {order.user.name}{' '}
               </p>
@@ -108,17 +126,23 @@ const OrderScreen = ({ match, history }) => {
                 <strong>Ekspedisi : </strong>
                 {getEkspedisi[2]}
               </p>
-              {order.isDelivered ? (
+              {order.isDelivered && !order.isReturned ? (
                 <Message variant='success'>
                   Dikirim Pada {order.deliveredAt}
                 </Message>
-              ) : (
+              ) : !order.isDelivered ? (
                 <Message variant='danger'>Belum Dikirim</Message>
+              ) : order.isReturned ? (
+                <Message variant='danger'>
+                  Dikirim Pada {order.returnAt}
+                </Message>
+              ) : (
+                <></>
               )}
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h2>Metode Pembayaran : </h2>
+              <h2 style={{ fontSize: 20 }}>Metode Pembayaran : </h2>
               <p>
                 <strong>Metode: </strong>
                 {order.paymentMethod}
@@ -131,7 +155,7 @@ const OrderScreen = ({ match, history }) => {
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h2>Detail Pesanan : </h2>
+              <h2 style={{ fontSize: 20 }}>Detail Pesanan : </h2>
               {order.orderItems.length === 0 ? (
                 <Message>Tidak ada Pesanan</Message>
               ) : (
@@ -162,17 +186,17 @@ const OrderScreen = ({ match, history }) => {
           </ListGroup>
         </Col>
         <Col md={4}>
-          {order.isPaid ? (
+          {order.isPaid && !order.isDelivered ? (
             <Button type='button' className='btn btn-block' onClick={cetakResi}>
               Cetak Resi
             </Button>
-          ) : order.isCanceled ? (
+          ) : order.isCanceled || order.isReturned ? (
             <Button
               type='button'
               className='btn btn-block btn-danger'
               onClick={cetakResiBatal}
             >
-              Cetak Resi Pembatalan
+              Cetak Resi Pengembalian
             </Button>
           ) : (
             <></>
@@ -180,7 +204,7 @@ const OrderScreen = ({ match, history }) => {
           <Card>
             <ListGroup variant='flush'>
               <ListGroup.Item>
-                <h2>Rincian Pesanan</h2>
+                <h2 style={{ fontSize: 20 }}>Rincian Pesanan</h2>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
@@ -228,11 +252,11 @@ const OrderScreen = ({ match, history }) => {
                   </Button>
                 </ListGroup.Item>
               ) : (
-                <ListGroup.Item></ListGroup.Item>
+                <></>
               )}
               {loadingDeliver && <Loader />}
 
-              {order.isPaid && !order.isDelivered && (
+              {order.isPaid && !order.isDelivered ? (
                 <ListGroup.Item>
                   <Button
                     type='button'
@@ -242,6 +266,24 @@ const OrderScreen = ({ match, history }) => {
                     Tandai Sudah Dikirim
                   </Button>
                 </ListGroup.Item>
+              ) : order.isPaid &&
+                order.isDelivered &&
+                !order.isCanceled &&
+                !order.isReturned ? (
+                <ListGroup.Item>
+                  {loadingReturnDelivery && <Loader />}
+                  <Button
+                    type='button'
+                    className='btn btn-block'
+                    onClick={returnHandler}
+                  >
+                    Meminta Pengembalian
+                  </Button>
+                </ListGroup.Item>
+              ) : order.isReturned ? (
+                <></>
+              ) : (
+                <></>
               )}
             </ListGroup>
           </Card>

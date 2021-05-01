@@ -31,6 +31,8 @@ import {
   orderListUnPaidReducer,
   orderRequestPayReducer,
   orderListDeliveredReducer,
+  orderRequestCancelReducer,
+  orderRequestRecievedReducer,
 } from './reducers/orderReducers'
 
 const reducer = combineReducers({
@@ -49,6 +51,8 @@ const reducer = combineReducers({
   costDelivery: postalCostDeliveryReducers,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
+  orderCancel: orderRequestCancelReducer,
+  orderRecieved: orderRequestRecievedReducer,
   orderPaid: orderListPaidReducer,
   orderNotPaid: orderListUnPaidReducer,
   orderDelivered: orderListDeliveredReducer,

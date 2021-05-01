@@ -123,10 +123,26 @@ const orderSchema = mongoose.Schema(
     recievedAt: {
       type: Date,
     },
+    isReturned: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    returnAt: {
+      type: Date,
+    },
+    returnId: {
+      type: String,
+      unique: true,
+    },
     isCanceled: {
       type: Boolean,
       required: true,
       default: false,
+    },
+    reason: {
+      type: String,
+      default: 'none',
     },
     canceledAt: {
       type: Date,

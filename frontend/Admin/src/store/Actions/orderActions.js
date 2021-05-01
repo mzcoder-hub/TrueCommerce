@@ -24,6 +24,9 @@ import {
   ORDER_PAY_FAIL,
   ORDER_PAY_REQUEST,
   ORDER_PAY_SUCCESS,
+  ORDER_RETURN_FAIL,
+  ORDER_RETURN_REQUEST,
+  ORDER_RETURN_SUCCESS,
 } from '../constant'
 import { CART_ITEM_RESET } from '../constant'
 import { logout } from './userActions'
@@ -169,6 +172,42 @@ export const deliverOrder = (order) => async (dispatch, getState) => {
     }
     dispatch({
       type: ORDER_DELIVER_FAIL,
+      payload: message,
+    })
+  }
+}
+
+export const returnOrder = (order) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ORDER_RETURN_REQUEST,
+    })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+    const { data } = await Axios.put(`/api/orders/return/${order}`, {}, config)
+
+    dispatch({
+      type: ORDER_RETURN_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message
+    if (message === 'Not authorized, token failed') {
+      dispatch(logout())
+    }
+    dispatch({
+      type: ORDER_RETURN_FAIL,
       payload: message,
     })
   }

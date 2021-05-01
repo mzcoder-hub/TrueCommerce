@@ -6,6 +6,16 @@ import Product from '../models/productModel.js'
 // @Route  POST /api/orders
 // @access Prived
 
+function makeid(length) {
+  var result = ''
+  var characters = '12345678900987654321'
+  var charactersLength = characters.length
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength))
+  }
+  return result
+}
+
 const addOrderItems = asyncHandler(async (req, res) => {
   const {
     orderItems,
@@ -15,7 +25,6 @@ const addOrderItems = asyncHandler(async (req, res) => {
     serviceDelivery,
     totalPrice,
   } = req.body
-
   function makeid(length) {
     var result = ''
     var characters = '12345678900987654321'
@@ -25,7 +34,6 @@ const addOrderItems = asyncHandler(async (req, res) => {
     }
     return result
   }
-
   if (orderItems && orderItems.length === 0) {
     res.status(400)
     throw new Error('No order items')
@@ -44,6 +52,65 @@ const addOrderItems = asyncHandler(async (req, res) => {
     const createOrder = await order.save()
 
     res.status(201).json(createOrder)
+  }
+})
+
+// @Desc   Update Order to Delivered
+// @Route  POST /api/orders/canceled/:id
+// @access Private
+
+const updateToCancel = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id)
+
+  const { reason } = req.body
+
+  if (order) {
+    order.isCanceled = true
+    order.canceledAt = Date.now()
+    order.reason = reason
+    order.paymentResult.status = 'CANCELED'
+    const updateOrder = await order.save()
+    res.json(updateOrder)
+  } else {
+    res.status(404)
+    throw Error('Order not found')
+  }
+})
+
+// @Desc   Update Order to Delivered
+// @Route  POST /api/orders/recieved/:id
+// @access Private
+
+const updateToRecieved = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id)
+
+  if (order) {
+    order.isRecieved = true
+    order.recievedAt = Date.now()
+    const updateOrder = await order.save()
+    res.json(updateOrder)
+  } else {
+    res.status(404)
+    throw Error('Order not found')
+  }
+})
+
+// @Desc   Update Order to Return
+// @Route  POST /api/orders/return/:id
+// @access Private
+
+const updateToReturn = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id)
+
+  if (order) {
+    order.isReturned = true
+    order.returnAt = Date.now()
+    order.returnId = `BAID${makeid(5)}`
+    const updateOrder = await order.save()
+    res.json(updateOrder)
+  } else {
+    res.status(404)
+    throw Error('Order not found')
   }
 })
 
@@ -138,6 +205,7 @@ const getOrdersPaid = asyncHandler(async (req, res) => {
   if (req.params.id) {
     const orders = await Order.find({
       isPaid: true,
+      isDelivered: false,
       user: req.params.id,
     })
     res.json(orders)
@@ -185,10 +253,13 @@ export {
   addOrderItems,
   getOrderById,
   updateOrderToPaid,
+  updateToCancel,
   getMyOrders,
   getOrders,
   updateOrderToDelivered,
   getOrdersPaid,
   getOrdersUnPaid,
   getOrdersDelivered,
+  updateToRecieved,
+  updateToReturn,
 }

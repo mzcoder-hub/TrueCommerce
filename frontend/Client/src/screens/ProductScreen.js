@@ -200,7 +200,7 @@ const ProductScreen = ({ match, history }) => {
                 >
                   Rating Produk {product.name}
                 </Typography>
-                <div className='comment'>
+                <div className='comment' id='comment'>
                   <Paper style={{ padding: '40px 20px' }}>
                     {errorCreateReview && (
                       <Message severity='error' childern='errorCreateReview' />

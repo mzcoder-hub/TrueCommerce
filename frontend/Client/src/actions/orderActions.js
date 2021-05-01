@@ -18,6 +18,12 @@ import {
   ORDER_LIST_DELIVERED_REQUEST,
   ORDER_LIST_DELIVERED_SUCCESS,
   ORDER_LIST_DELIVERED_FAIL,
+  ORDER_CANCEL_REQUEST,
+  ORDER_CANCEL_SUCCESS,
+  ORDER_CANCEL_FAIL,
+  ORDER_RECIEVED_REQUEST,
+  ORDER_RECIEVED_SUCCESS,
+  ORDER_RECIEVED_FAIL,
 } from '../constants/orderConstants'
 
 export const createOrder = (order) => async (dispatch, getState) => {
@@ -77,6 +83,73 @@ export const sendRequestPay = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: ORDER_REQUEST_PAY_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const sendCancelRequest = ({ id, reason }) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    dispatch({
+      type: ORDER_CANCEL_REQUEST,
+    })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    await Axios.post(`/api/orders/canceled/${id}`, reason, config)
+
+    dispatch({
+      type: ORDER_CANCEL_SUCCESS,
+    })
+  } catch (error) {
+    dispatch({
+      type: ORDER_CANCEL_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const sendRecievedRequest = ({ id }) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ORDER_RECIEVED_REQUEST,
+    })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    await Axios.post(`/api/orders/recieved/${id}`, id, config)
+
+    dispatch({
+      type: ORDER_RECIEVED_SUCCESS,
+    })
+  } catch (error) {
+    dispatch({
+      type: ORDER_RECIEVED_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
