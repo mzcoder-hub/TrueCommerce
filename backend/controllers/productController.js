@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler'
 import Product from '../models/productModel.js'
 import Category from '../models/categoryModel.js'
+import { json } from 'express'
 
 // @Desc   Fetch All Products
 // @Route  Get /api/products
@@ -45,7 +46,9 @@ const getProductById = asyncHandler(async (req, res) => {
 // @access Public
 
 const getProductBySlug = asyncHandler(async (req, res) => {
-  const product = await Product.findOne({ slug: req.params.slug })
+  const product = await Product.findOne({
+    slug: req.params.slug,
+  }).populate('category', 'name slug')
 
   if (product) {
     res.json(product)

@@ -6,8 +6,14 @@ import Sliders from '../components/Sliders'
 import Category from '../components/Category'
 import { listCategory } from '../actions/productActions'
 
-const HomeScreens = () => {
+const HomeScreens = ({ match }) => {
   const dispatch = useDispatch()
+  var keyword
+  var pageNumber
+  if (match.params) {
+    keyword = match.params.keyword
+    pageNumber = match.params.pageNumber || 1
+  }
 
   useEffect(() => {
     dispatch(listCategory())
@@ -19,7 +25,7 @@ const HomeScreens = () => {
       </Grid>
       <Category />
       <Grid style={{ marginBottom: 65 }}>
-        <Products />
+        <Products keyword={keyword} pageNumber={pageNumber} />
       </Grid>
     </>
   )

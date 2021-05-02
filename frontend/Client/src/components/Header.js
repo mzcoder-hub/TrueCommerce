@@ -16,6 +16,7 @@ import Meta from './Meta'
 const Header = () => {
   const history = useHistory()
   let [path, setPath] = useState('')
+  let [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     return history.listen((location) => {
@@ -49,6 +50,14 @@ const Header = () => {
 
   const classes = useStyles()
 
+  const searchHandler = () => {
+    if (searchQuery === '') {
+      alert('Masukan Kata Kunci')
+    } else {
+      history.push(`/search/${searchQuery}`)
+    }
+  }
+
   return (
     <>
       <Meta />
@@ -70,14 +79,15 @@ const Header = () => {
           </Grid>
         </Grid>
       </Box>
-      <Paper component='form' className={classes.root}>
+      <Paper className={classes.root}>
         <InputBase
           className={classes.input}
           placeholder='Cari Produk disini'
           inputProps={{ 'aria-label': 'Cari Produk disini' }}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
         <IconButton
-          type='submit'
+          onClick={searchHandler}
           className={classes.iconButton}
           aria-label='search'
         >

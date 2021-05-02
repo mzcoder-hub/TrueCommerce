@@ -9,6 +9,8 @@ import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import CardActions from '@material-ui/core/CardActions'
 import { makeStyles } from '@material-ui/core/styles'
+
+import { Pagination, PaginationItem } from '@material-ui/lab'
 // import IconButton from '@material-ui/core/IconButton'
 // import VisibilityIcon from '@material-ui/icons/Visibility'
 // import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
@@ -18,15 +20,15 @@ import Rated from './Rated'
 import Loading from './Loader'
 import Message from './Message'
 
-const Products = ({ match }) => {
+const Products = ({ keyword = '', pageNumber }) => {
   const dispatch = useDispatch()
 
   const productList = useSelector((state) => state.productList)
-  const { loading, error, products } = productList
+  const { loading, error, products, pages, page } = productList
 
   useEffect(() => {
-    dispatch(listProducts())
-  }, [dispatch])
+    dispatch(listProducts(keyword, pageNumber))
+  }, [dispatch, keyword, pageNumber])
 
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -133,6 +135,23 @@ const Products = ({ match }) => {
               </Card>
             </Grid>
           ))}
+          <Grid item xs={12} key='pagination'>
+            <Pagination
+              hideNextButton={true}
+              hidePrevButton={true}
+              count={pages}
+              renderItem={(item) => (
+                <a
+                  href={`/page/${item.page}`}
+                  style={{ textDecoration: 'none', color: '#000' }}
+                >
+                  <PaginationItem {...item} selected={true} />
+                </a>
+              )}
+              shape='rounded'
+              size='large'
+            />
+          </Grid>
         </Grid>
       )}
     </div>

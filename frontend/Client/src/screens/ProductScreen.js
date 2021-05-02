@@ -20,7 +20,6 @@ import Meta from '../components/Meta'
 import Rated from '../components/Rated'
 import AddToCartCheckout from '../components/AddToCartCheckout'
 import {
-  categoryDetailsId,
   createProductReview,
   listProductDetails,
 } from '../actions/productActions'
@@ -44,9 +43,6 @@ const ProductScreen = ({ match, history }) => {
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
 
-  const categoryDetailId = useSelector((state) => state.categoryDetailId)
-  const { category } = categoryDetailId
-
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
@@ -66,17 +62,14 @@ const ProductScreen = ({ match, history }) => {
   })
 
   useEffect(() => {
+    dispatch(listProductDetails(match.params.slug))
     if (successCreateReview) {
       alert('Review Submited')
       setRating(0)
       setComment('')
       dispatch({ type: PRODUCT_CREATE_REVIEW_RESET })
     }
-    dispatch(listProductDetails(match.params.slug))
-    if (product.category) {
-      dispatch(categoryDetailsId(product.category))
-    }
-  }, [successCreateReview, dispatch, match])
+  }, [dispatch, match, successCreateReview])
 
   const style = {
     background: 'rgb(2 2 2)',
@@ -157,12 +150,14 @@ const ProductScreen = ({ match, history }) => {
                           <strong>Kategori</strong>
                         </TableCell>
                         <TableCell>
-                          <Link
-                            to={`/kategori/${category.slug}`}
-                            style={{ textDecoration: 'none', color: '#000' }}
-                          >
-                            {category.name}
-                          </Link>
+                          {product.category && (
+                            <Link
+                              to={`/kategori/${product.category.slug}`}
+                              style={{ textDecoration: 'none', color: '#000' }}
+                            >
+                              {product.category.name}
+                            </Link>
+                          )}
                         </TableCell>
                       </TableRow>
                       <TableRow>

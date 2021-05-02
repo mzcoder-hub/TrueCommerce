@@ -202,3 +202,13 @@ fieldset > .countReviewPost {
 .slick-prev:hover {
   background-color: #000;
 }
+
+.MuiPagination-ul {
+  margin: 10px !important;
+  display: flex;
+  padding: 0;
+  flex-wrap: wrap;
+  list-style: none;
+  align-items: center;
+  justify-content: space-between;
+}

@@ -30,6 +30,8 @@ const Layouting = () => {
     <Grid item xs={12}>
       <Header />
       <Route path='/' component={HomeScreens} exact />
+      <Route path='/search/:keyword' component={HomeScreens} exact />
+      <Route path='/page/:pageNumber' component={HomeScreens} exact />
       <Route path='/produk/:slug' component={ProductScreen} />
       <Route path='/kategori/:slug' component={ProductByCategoryScreen} />
       <Route path='/cart/:sku/:id?' component={CartScreen} />
