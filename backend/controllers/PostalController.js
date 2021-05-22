@@ -80,9 +80,9 @@ const getCostDelivery = asyncHandler(async (req, res) => {
   const payload = {
     origin: '501',
     originType: 'city',
-    destination: '574',
+    destination: `${req.body.destination}`,
     destinationType: 'subdistrict',
-    weight: 250,
+    weight: req.body.weight,
     courier: 'jnt:jne:sicepat:ninja',
   }
   await axios

@@ -58,6 +58,17 @@ const DeliveryScreen = ({ history }) => {
   const cart = useSelector((state) => state.cart)
   const { cartItems, paymentMethod, shippingAddress } = cart
 
+  const dataVariant = []
+  cartItems.map((cartData) =>
+    cartData.variant.forEach((element) => {
+      dataVariant.push(element.berat)
+    })
+  )
+  var total = 0
+  for (var i = 0; i < dataVariant.length; i++) {
+    total += dataVariant[i]
+  }
+
   const costDelivery = useSelector((state) => state.costDelivery)
   const { listCostDeliveryData, loading } = costDelivery
 
@@ -71,11 +82,11 @@ const DeliveryScreen = ({ history }) => {
     const requiredData = {
       destination: shippingAddress.subDisctrict.subdistrict_id,
       destinationType: shippingAddress.subDisctrict.type,
-      weight: 100,
+      weight: total,
     }
 
     dispatch(listCostDelivery(requiredData))
-  }, [dispatch, shippingAddress, history, paymentMethod, cartItems])
+  }, [dispatch, shippingAddress, history, paymentMethod, cartItems, total])
 
   const submitHandler = (e) => {
     e.preventDefault()

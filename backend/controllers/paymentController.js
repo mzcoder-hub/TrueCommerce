@@ -20,10 +20,12 @@ const requestPaymentTripay = asyncHandler(async (req, res) => {
     const amount = order.totalPrice
     const paymentMethodTripay = order.paymentMethod
     const expiry = parseInt(Math.floor(new Date() / 1000) + 24 * 60 * 60)
+
     const signature = crypto
       .createHmac('sha256', privateKey)
       .update(merchant_code + merchant_ref + amount)
       .digest('hex')
+
     const orderItems = order.orderItems
     const orderItemDetail = []
 
@@ -51,8 +53,8 @@ const requestPaymentTripay = asyncHandler(async (req, res) => {
       customer_name: user.name,
       customer_email: user.email,
       order_items: orderItemDetail,
-      callback_url: 'https://78e6cdb39eca.ngrok.io/api/payment/paycallback',
-      return_url: 'https://78e6cdb39eca.ngrok.io/api/payment/redirect',
+      callback_url: 'http://ba182c55019f.ngrok.io/api/payment/paycallback',
+      return_url: 'http://ba182c55019f.ngrok.io/api/payment/redirect',
       expired_time: expiry,
       signature: signature,
     }

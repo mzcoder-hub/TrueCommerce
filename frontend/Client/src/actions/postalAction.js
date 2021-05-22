@@ -139,8 +139,8 @@ export const listCostDelivery = (requiredData) => async (
     const payload = {
       origin: '4910',
       originType: 'city',
-      destination: requiredData.city_id,
-      destinationType: requiredData.type,
+      destination: requiredData.destination,
+      destinationType: requiredData.destinationType,
       weight: requiredData.weight,
       courier: 'jnt:jne:sicepat:ninja',
     }

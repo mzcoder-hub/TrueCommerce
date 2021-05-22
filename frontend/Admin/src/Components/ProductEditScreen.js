@@ -137,7 +137,7 @@ const ProductEditScreen = ({ match, history }) => {
   )
 
   const [inputFields, setInputFields] = useState([
-    { ukuran: '', warna: '', harga: '', stok: '', sku: '' },
+    { ukuran: '', warna: '', harga: '', stok: '', berat: '', sku: '' },
   ])
 
   const handleSubmit = (e) => {
@@ -154,6 +154,8 @@ const ProductEditScreen = ({ match, history }) => {
       values[index].harga = theData
     } else if (event.target.name === 'stok') {
       values[index].stok = theData
+    } else if (event.target.name === 'berat') {
+      values[index].berat = theData
     } else {
       values[index].sku = theData
     }
@@ -163,7 +165,14 @@ const ProductEditScreen = ({ match, history }) => {
 
   const handleAddFields = () => {
     const values = [...inputFields]
-    values.push({ type: '', ukuran: '', warna: '', harga: '' })
+    values.push({
+      type: '',
+      ukuran: '',
+      warna: '',
+      harga: '',
+      berat: '',
+      sku: '',
+    })
     setInputFields(values)
   }
 
@@ -343,17 +352,32 @@ const ProductEditScreen = ({ match, history }) => {
                               }
                             ></Form.Control>
                           </Col>
-                          <Col md={2}>
+                          <Col md={1}>
                             <Form.Label>Stok</Form.Label>
                             <Form.Control
                               key='Stok'
-                              type='text'
+                              type='number'
                               name='stok'
                               placeholder='Stok'
                               value={inputField.stok}
                               onChange={(event) =>
                                 handleInputChange(index, event)
                               }
+                              style={{ padding: 0, height: '50%' }}
+                            ></Form.Control>
+                          </Col>
+                          <Col md={1}>
+                            <Form.Label>Berat</Form.Label>
+                            <Form.Control
+                              key='Berat'
+                              type='number'
+                              name='berat'
+                              placeholder='Berat'
+                              value={inputField.berat}
+                              onChange={(event) =>
+                                handleInputChange(index, event)
+                              }
+                              style={{ padding: 0, height: '50%' }}
                             ></Form.Control>
                           </Col>
                           <Col md={2}>

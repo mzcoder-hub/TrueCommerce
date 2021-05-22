@@ -20,6 +20,7 @@ const variantSchema = mongoose.Schema({
   sku: { type: String },
   ukuran: { type: String },
   warna: { type: String },
+  berat: { type: Number },
   harga: { type: Number },
 })
 const productSchema = mongoose.Schema(

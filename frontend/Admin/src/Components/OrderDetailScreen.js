@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,7 +9,10 @@ import {
   deliverOrder,
   returnOrder,
 } from '../store/Actions/orderActions'
+import { useReactToPrint } from 'react-to-print'
 import { ORDER_DELIVER_RESET } from '../store/constant'
+
+import PackagePrint from './Compo/PackagePrint'
 
 const OrderScreen = ({ match, history }) => {
   function rupiahConvert(nominal) {
@@ -68,9 +71,11 @@ const OrderScreen = ({ match, history }) => {
     // reminder
   }
 
-  const cetakResi = () => {
-    // reminder
-  }
+  const reference = useRef()
+
+  const cetakResi = useReactToPrint({
+    content: () => reference.current,
+  })
 
   const cetakResiBatal = () => {
     // reminder
@@ -187,9 +192,18 @@ const OrderScreen = ({ match, history }) => {
         </Col>
         <Col md={4}>
           {order.isPaid && !order.isDelivered ? (
-            <Button type='button' className='btn btn-block' onClick={cetakResi}>
-              Cetak Resi
-            </Button>
+            <>
+              <Button
+                type='button'
+                onClick={cetakResi}
+                className='btn btn-block'
+              >
+                Cetak Resi
+              </Button>
+              <div style={{ display: 'none' }}>
+                <PackagePrint ref={reference} />
+              </div>
+            </>
           ) : order.isCanceled || order.isReturned ? (
             <Button
               type='button'

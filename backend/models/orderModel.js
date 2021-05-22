@@ -133,7 +133,6 @@ const orderSchema = mongoose.Schema(
     },
     returnId: {
       type: String,
-      unique: true,
     },
     isCanceled: {
       type: Boolean,
