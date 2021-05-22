@@ -15,6 +15,11 @@ import { ORDER_DELIVER_RESET } from '../store/constant'
 import PackagePrint from './Compo/PackagePrint'
 
 const OrderScreen = ({ match, history }) => {
+  var today = new Date()
+
+  const date =
+    today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
+
   function rupiahConvert(nominal) {
     if (nominal) {
       var rupiah = ''
@@ -201,7 +206,18 @@ const OrderScreen = ({ match, history }) => {
                 Cetak Resi
               </Button>
               <div style={{ display: 'none' }}>
-                <PackagePrint ref={reference} />
+                <PackagePrint
+                  ref={reference}
+                  shipping={getEkspedisi[1]}
+                  tgl={date}
+                  kdFaktur={order.orderId}
+                  noResi='nomor Resi'
+                  typePackage={getEkspedisi[0]}
+                  price={order.totalPrice}
+                  alamat={order.shippingAddress}
+                  penerima={order.user.name}
+                  kodeOrder={order._id}
+                />
               </div>
             </>
           ) : order.isCanceled || order.isReturned ? (
